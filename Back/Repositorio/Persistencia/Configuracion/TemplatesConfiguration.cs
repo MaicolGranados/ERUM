@@ -1,0 +1,45 @@
+﻿using Entidades;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repositorio.Persistencia.Configuracion
+{
+    public class TemplatesConfiguration : IEntityTypeConfiguration<Templates>
+    {
+        public void Configure(EntityTypeBuilder<Templates> builder)
+        {
+            builder.ToTable("Templates");
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id)
+                .UseIdentityAlwaysColumn();
+
+            builder.Property(x => x.Codigo)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(x => x.Description)
+                .HasMaxLength(500)
+                .IsRequired();
+
+            builder.Property(x => x.Html)
+                .HasColumnType("text")
+                .IsRequired();
+
+            builder.Property(x => x.Imagen)
+                .HasColumnType("text")
+                .IsRequired();
+
+            builder.Property(x => x.Costo)
+                .IsRequired();
+
+            builder.Property(x => x.FechaVigencia)
+                .IsRequired();
+        }
+    }
+}

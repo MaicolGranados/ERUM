@@ -1,0 +1,101 @@
+<div class="flex h-screen">
+
+  <!-- Overlay móvil -->
+
+  @if(isSidebarOpen) {
+
+    <div class="fixed inset-0 bg-black/50 z-40 lg:hidden" (click)="closeSidebar()">
+
+    </div>
+
+  }
+
+  <!-- Sidebar -->
+
+  <aside
+    class="fixed lg:static top-0 left-0 h-full w-72 bg-slate-900 text-white z-50
+           transform transition-transform duration-300
+           lg:translate-x-0"
+    [class.translate-x-0]="isSidebarOpen"
+    [class.-translate-x-full]="!isSidebarOpen">
+
+    <div class="p-6 border-b border-slate-700">
+
+      <h1 class="text-3xl font-bold">
+        ERUM
+      </h1>
+
+      <p class="text-slate-400 text-sm">
+        Bienvenido {{ userName }}
+      </p>
+
+    </div>
+
+    <nav class="p-4 space-y-2">
+
+      <a routerLink="/admin/users" (click)="closeSidebar()" class="flex items-center gap-3 p-4 rounded-xl hover:bg-slate-800">
+      <i class="fa-solid fa-users"></i>
+        Usuarios
+      </a>
+
+      <a routerLink="/admin/courses" (click)="closeSidebar()" class="flex items-center gap-3 p-4 rounded-xl hover:bg-slate-800">
+      <i class="fa-solid fa-file-lines"></i>
+          Cursos
+      </a>
+
+      <a routerLink="/admin/templates" (click)="closeSidebar()" class="flex items-center gap-3 p-4 rounded-xl hover:bg-slate-800">
+      <i class="fa-solid fa-file-lines"></i>
+        Plantillas
+      </a>
+
+    </nav>
+
+    <div class="p-6 border-t border-slate-700 mt-auto">
+
+      <button
+        (click)="logout()"
+        class="flex items-center gap-3 text-slate-400">
+
+  <i class="fa-solid fa-right-from-bracket"></i>
+
+        Cerrar sesión
+
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- Contenido -->
+
+  <div class="flex-1 flex flex-col">
+
+    <!-- Header móvil -->
+
+    <header
+      class="lg:hidden bg-white shadow px-4 py-3 flex items-center">
+
+      <button
+        (click)="toggleSidebar()"
+        class="text-slate-900 text-xl">
+
+        <i class="fa-solid fa-bars"></i>
+
+      </button>
+
+      <h2 class="ml-4 font-semibold">
+        ERUM
+      </h2>
+
+    </header>
+
+    <main
+      class="flex-1 bg-slate-100 p-4 lg:p-8 overflow-auto">
+
+      <router-outlet></router-outlet>
+
+    </main>
+
+  </div>
+
+</div>

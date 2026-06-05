@@ -1,0 +1,311 @@
+<div class="flex justify-between items-center mb-4">
+
+  <h2 class="text-xl font-semibold">
+    Usuarios ({{ filteredUsers.length }})
+  </h2>
+
+  <div class="flex gap-3">
+
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="filterUsers()"
+      placeholder="Buscar usuario, correo o rol..."
+      class="border rounded-lg px-4 py-2 w-72">
+
+    <button
+      (click)="newUser()"
+      class="bg-green-600 text-white px-4 py-2 rounded-lg
+             hover:bg-green-700 flex items-center gap-2">
+
+      <i class="fa-solid fa-user-plus"></i>
+      Nuevo Usuario
+
+    </button>
+
+  </div>
+
+</div>
+
+<table class="w-full">
+
+  <thead>
+
+    <tr class="border-b">
+      <th class="p-4"></th>
+      <th class="text-left p-4">Usuario</th>
+      <th class="text-left p-4">Correo</th>
+      <th class="text-left p-4">Rol</th>
+      <th class="text-left p-4">Estado</th>
+      <th class="text-left p-4">Último Login</th>
+      <th class="p-4"></th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+
+  @for (user of filteredUsers; track user.id) {
+
+    <tr class="border-b hover:bg-slate-50">
+
+      <!-- EDITAR -->
+
+      <td class="p-4">
+
+        @if(editingUserId !== user.id) {
+
+          <button
+            (click)="editUser(user)"
+            class="text-blue-600">
+
+          <i class="fa-solid fa-pen"></i>
+
+          </button>
+
+        }
+
+      </td>
+
+      <!-- USUARIO -->
+
+      <td class="p-4">
+        {{ user.username }}
+      </td>
+
+      <!-- EMAIL -->
+
+      <td class="p-4">
+
+        @if(editingUserId === user.id) {
+
+          <input
+            [(ngModel)]="editModel.email"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ user.email }}
+
+        }
+
+      </td>
+
+      <!-- ROL -->
+
+      <td class="p-4">
+
+        @if(editingUserId === user.id) {
+
+          <select
+            [(ngModel)]="editModel.idRol"
+            class="border rounded px-2 py-1">
+
+            @for(role of roles; track role.id) {
+
+              <option [value]="role.id">
+                {{ role.nombre }}
+              </option>
+
+            }
+
+          </select>
+
+        } @else {
+
+          {{ user.roles.nameRole }}
+
+        }
+
+      </td>
+
+      <!-- ESTADO -->
+
+      <td class="p-4">
+
+        @if(editingUserId === user.id) {
+
+          <select
+            [(ngModel)]="editModel.activo"
+            class="border rounded px-2 py-1">
+
+            <option [ngValue]="true">
+              Activo
+            </option>
+
+            <option [ngValue]="false">
+              Inactivo
+            </option>
+
+          </select>
+
+        } @else {
+
+          {{ user.isActive ? 'Activo' : 'Inactivo' }}
+
+        }
+
+      </td>
+
+      <!-- LOGIN -->
+
+      <td class="p-4">
+
+        {{ user.lastLogin || 'Nunca' }}
+
+      </td>
+
+      <!-- ACCIONES -->
+
+      <td class="p-4">
+
+        @if(editingUserId === user.id) {
+
+          <button
+            (click)="saveUser()"
+            class="text-green-600 mr-2">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+          </button>
+
+          <button
+            (click)="cancelEdit()"
+            class="text-gray-600">
+
+            <i class="fa-solid fa-xmark"></i>
+
+          </button>
+
+        } @else {
+
+          <td class="p-4">
+          <div class="flex gap-3">
+
+            <button
+              (click)="resetPassword(user.id)"
+              class="text-blue-600">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+
+            <button
+              (click)="deleteUser(user.id)"
+              class="text-red-600">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+          </div>
+        </td>
+
+        }
+
+      </td>
+
+    </tr>
+
+  }
+
+</tbody>
+
+</table>
+
+
+@if(showCreateModal) {
+
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div
+    class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+
+    <div class="flex justify-between items-center mb-4">
+
+      <h2 class="text-xl font-semibold">
+
+        Nuevo Usuario
+
+      </h2>
+
+      <button
+        (click)="closeModal()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <div class="space-y-4">
+
+      <div>
+
+        <label class="block mb-1">
+          Usuario
+        </label>
+
+        <input [(ngModel)]="createModel.username"
+          type="text"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Correo
+        </label>
+
+        <input [(ngModel)]="createModel.email"
+          type="email"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Rol
+        </label>
+
+        <select
+          class="w-full border rounded-lg px-3 py-2">
+
+          @for(role of roles; track role.id) {
+
+              <option [value]="role.id">
+                {{ role.nombre }}
+              </option>
+
+            }
+
+        </select>
+
+      </div>
+
+
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6">
+
+      <button
+        (click)="closeModal()"
+        class="px-4 py-2 border rounded-lg">
+
+        Cancelar
+
+      </button>
+
+      <button (click)="saveNewUser()"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg">
+
+        Guardar
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+}
