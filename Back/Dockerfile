@@ -12,12 +12,12 @@ COPY . .
 
 # Restore específico
 
-RUN dotnet restore "Back/Servicio/AcreditacionErumApi.csproj"
+RUN dotnet restore "Servicio/AcreditacionErumApi.csproj"
 
 # Publish
 
 RUN dotnet publish \
-    "Back/Servicio/AcreditacionErumApi.csproj" \
+    "Servicio/AcreditacionErumApi.csproj" \
     -c Release \
     -o /app/publish
 
