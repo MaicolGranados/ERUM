@@ -1,35 +1,610 @@
-<div class="bg-white rounded-2xl shadow p-8">
+<div class="flex justify-between items-center mb-4">
 
-  <div class="flex justify-between items-center mb-8">
+  <h2 class="text-xl font-semibold">
+    Cursos ({{ filteredCourses.length }})
+  </h2>
 
-    <h1 class="text-3xl font-bold">
-      Cursos
-    </h1>
+  <div class="flex gap-3">
+
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="filterCourse()"
+      placeholder="Buscar curso..."
+      class="border rounded-lg px-4 py-2 w-72">
 
     <button
-      class="bg-red-600 text-white px-5 py-3 rounded-xl"
-    >
-      Nueva Curso
+      (click)="newCourse()"
+      class="bg-green-600 text-white px-4 py-2 rounded-lg
+             hover:bg-green-700 flex items-center gap-2">
+
+      <i class="fa-solid fa-user-plus"></i>
+      Nuevo Curso
+
+    </button>
+
+    <button
+      (click)="newTemplate()"
+      class="bg-green-600 text-white px-4 py-2 rounded-lg
+             hover:bg-green-700 flex items-center gap-2">
+
+      <i class="fa-solid fa-user-plus"></i>
+      Nueva Plantilla
+
     </button>
 
   </div>
 
-  <div class="grid grid-cols-3 gap-6">
+</div>
 
-    <div
-      class="border rounded-2xl p-6 hover:shadow-lg transition"
-    >
+<table class="w-full">
 
-      <h2 class="font-bold text-xl mb-2">
-        Datos cursos
+  <thead>
+
+    <tr class="border-b">
+      <th class="p-4"></th>
+      <th class="text-left p-4">Código</th>
+      <th class="text-left p-4">Nombre</th>
+      <th class="text-left p-4">Descripción</th>
+      <th class="text-left p-4">Vigencia</th>
+      <th class="text-left p-4">Costo</th>
+      <th class="p-4"></th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+
+  @for (courses of filteredCourses; track courses.id) {
+
+    <tr class="border-b hover:bg-slate-50">
+
+      <!-- EDITAR -->
+
+      <td class="p-4">
+
+        @if(editingCourseId !== courses.id) {
+
+<div class="flex justify-center items-center gap-4">
+
+    <button
+      (click)="editCourse(courses)"
+      class="text-blue-600 hover:text-blue-800">
+
+      <i class="fa-solid fa-pen"></i>
+
+    </button>
+
+    <button
+    (click)="editTemplate(courses)"
+    class="text-amber-600">
+    <i class="fa-solid fa-file-pen"></i>
+  </button>
+
+    <button
+      (click)="previewTemplate(courses)"
+      class="text-sky-600 hover:text-sky-800">
+
+      <i class="fa-solid fa-eye"></i>
+
+    </button>
+
+  </div>
+
+
+
+        }
+
+      </td>
+
+
+
+      <!-- CODIGO -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.code"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.codigo }}
+
+        }
+
+      </td>
+
+      <!-- NOMBRE -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.name"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.nombre }}
+
+        }
+
+      </td>
+
+      <!-- DESCRIPCION -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.description"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.descripcion }}
+
+        }
+
+      </td>
+
+      <!-- VIGENCIA -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.validity"
+            (keydown)="preventInvalidKeys($event)"
+            type="number"
+            min="0"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.vigencia }} meses
+
+        }
+
+      </td>
+
+      <!-- COSTO -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.cost"
+            (keydown)="preventInvalidKeys($event)"
+            type="number"
+            min="0"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.costo | currency }}
+
+        }
+
+      </td>
+
+      <!-- ACCIONES -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <button
+            (click)="saveCourse()"
+            class="text-green-600 mr-2">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+          </button>
+
+          <button
+            (click)="cancelEdit()"
+            class="text-gray-600">
+
+            <i class="fa-solid fa-xmark"></i>
+
+          </button>
+
+        } @else {
+
+          <td class="p-4">
+          <div class="flex gap-3">
+
+            <button
+              (click)="deleteCourse(courses.id)"
+              class="text-red-600">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+          </div>
+        </td>
+
+        }
+
+      </td>
+
+    </tr>
+
+  }
+
+</tbody>
+
+</table>
+
+
+@if(showCreateModal) {
+
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div
+    class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+
+    <div class="flex justify-between items-center mb-4">
+
+      <h2 class="text-xl font-semibold">
+
+        Nuevo Curso
+
       </h2>
 
-      <p class="text-slate-500">
-        Lorem.
-      </p>
+      <button
+        (click)="closeModal()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <div class="space-y-4">
+
+      <div>
+
+        <label class="block mb-1">
+          Código
+        </label>
+
+        <input [(ngModel)]="createModel.code"
+          type="text"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Nombre
+        </label>
+
+        <input [(ngModel)]="createModel.name"
+          type="email"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Descripción
+        </label>
+
+        <input [(ngModel)]="createModel.description"
+          type="email"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Vigencia
+        </label>
+
+        <input [(ngModel)]="createModel.validity"
+          (keydown)="preventInvalidKeys($event)"
+            type="number"
+            min="0"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+      <div>
+
+        <label class="block mb-1">
+          Costo
+        </label>
+
+        <input [(ngModel)]="createModel.cost"
+          (keydown)="preventInvalidKeys($event)"
+            type="number"
+            min="0"
+          class="w-full border rounded-lg px-3 py-2">
+
+      </div>
+
+
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6">
+
+      <button
+        (click)="closeModal()"
+        class="px-4 py-2 border rounded-lg">
+
+        Cancelar
+
+      </button>
+
+      <button (click)="saveNewCourse()"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg">
+
+        Guardar
+
+      </button>
 
     </div>
 
   </div>
 
 </div>
+
+}
+
+
+@if(showPreviewModal){
+
+<div
+  class="fixed inset-0 bg-black/50
+         flex items-center justify-center z-50">
+
+  <div
+    class="bg-white
+           rounded-xl
+           w-[90vw]
+           h-[90vh]
+           overflow-auto
+           p-4">
+
+    <div class="flex justify-end">
+
+      <button
+        (click)="showPreviewModal = false">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <div [innerHTML]="previewHtml">
+
+    </div>
+
+  </div>
+
+</div>
+
+}
+
+@if(showCreateTemplateModal){
+
+<div
+  class="fixed inset-0 bg-black/50
+         flex items-center justify-center
+         z-50">
+
+  <div
+    class="bg-white
+           rounded-xl
+           w-[95vw]
+           h-[95vh]
+           flex
+           overflow-hidden">
+
+    <!-- PANEL IZQUIERDO -->
+
+    <div class="w-72 border-r p-4 overflow-y-auto">
+
+      <div class="flex justify-between items-center mb-4">
+
+        <h2 class="font-semibold text-lg">
+          Diseñador
+        </h2>
+
+        <button
+          (click)="closeModalTemplate()">
+
+          <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+      </div>
+      <div class="mb-4">
+
+  <label class="block mb-2 font-medium">
+
+    Curso
+
+  </label>
+
+  <select
+    [(ngModel)]="createModelTemplate.idCourse"
+    class="w-full border rounded-lg p-2">
+
+    <option [ngValue]="0">
+      Seleccione un curso
+    </option>
+
+    @for(course of availableCourses; track course.id){
+
+    <option [ngValue]="course.id">
+
+      {{ course.codigo }} - {{ course.nombre }}
+
+    </option>
+
+  }
+
+  </select>
+
+</div>
+
+      <h3 class="font-medium mb-2">
+        Campos
+      </h3>
+
+      @for(field of availableFields; track field){
+
+        <button
+          (click)="addField(field)"
+          class="
+            w-full
+            mb-2
+            border
+            rounded-lg
+            p-2
+            text-left
+            hover:bg-slate-100">
+
+          {{ field }}
+
+        </button>
+
+      }
+
+      <hr class="my-4">
+
+      <label class="block mb-2">
+        Imagen de fondo
+      </label>
+
+      <input
+      class="
+          mt-4
+          w-full
+          bg-green-600
+          text-white
+          py-2
+          rounded-lg"
+        type="file"
+        accept="image/*"
+        (change)="onBackgroundSelected($event)">
+
+@if (isEditingTemplate) {
+<button
+        (click)="saveNewTemplate()"
+        class="
+          mt-4
+          w-full
+          bg-green-600
+          text-white
+          py-2
+          rounded-lg">
+
+        Guardar Plantilla
+
+      </button>
+}@else{
+<button
+  (click)="saveTemplate()"
+ class="
+          mt-4
+          w-full
+          bg-green-600
+          text-white
+          py-2
+          rounded-lg">
+
+  {{ isEditingTemplate ? 'Actualizar' : 'Guardar' }}
+
+</button>
+
+}
+
+
+
+
+    </div>
+
+    <!-- LIENZO -->
+
+    <div
+      class="flex-1
+             overflow-auto
+             bg-slate-100
+             p-6">
+
+      <div
+        class="relative
+               bg-white
+               shadow-lg
+               mx-auto"
+        style="
+          width:1200px;
+          height:800px;">
+
+        @if(backgroundImage){
+
+          <img
+            [src]="backgroundImage"
+            class="
+              absolute
+              inset-0
+              w-full
+              h-full
+              object-cover">
+
+        }
+
+        @for(field of designerFields; track $index){
+
+          <div
+
+            cdkDrag
+
+            [cdkDragFreeDragPosition]="{
+              x: field.x,
+              y: field.y
+            }"
+
+            (cdkDragEnded)="dragEnded($event, field)"
+
+            class="
+              absolute
+              border
+              border-blue-500
+              bg-white
+              px-2
+              py-1
+              cursor-move
+              shadow
+              select-none">
+
+            {{ '{{' + field.type + '}}' }}
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+}

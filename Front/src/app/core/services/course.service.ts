@@ -7,14 +7,14 @@ import { environment } from '../../enviroments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TemplateService {
+export class CourseService {
 
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
   private apiUrl = environment.apiUrl;
 
-  getTemplates(): Observable<any> {
+  getCourses(): Observable<any> {
 
     const token = this.authService.getToken();
 
@@ -22,30 +22,10 @@ export class TemplateService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.get(`${this.apiUrl}/api/GetTemplates`, { headers });
+    return this.http.get(`${this.apiUrl}/api/GetCourses`, { headers });
   }
 
-  uploadImage(file: File): Observable<any> {
-
-    const token = this.authService.getToken();
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    const formData = new FormData();
-
-    formData.append('file', file);
-
-    return this.http.post(
-      `${this.apiUrl}/api/SaveBackground`,
-      formData,
-      { headers }
-    );
-
-  }
-
-  createTemplate(request: any){
+  createCourse(request: any){
     const token = this.authService.getToken();
 
     const headers = new HttpHeaders({
@@ -53,13 +33,13 @@ export class TemplateService {
     });
 
     return this.http.post(
-      `${this.apiUrl}/api/CreateTemplate`,
+      `${this.apiUrl}/api/CreateCourse`,
       request,
       { headers }
     );
   }
 
-  deleteTemplate(idTemplate: number) {
+  deleteCourse(idCourse: number) {
 
     const token = this.authService.getToken();
 
@@ -68,17 +48,17 @@ export class TemplateService {
     });
 
     return this.http.delete(
-      `${this.apiUrl}/api/DeleteTemplate`,
+      `${this.apiUrl}/api/DeleteCourse`,
       {
         headers,
         body: {
-          IdTemplate: idTemplate
+          IdCourse: idCourse
         }
       }
     );
   }
 
-  updateTemplate(request: any) {
+  updateCourse(request: any) {
 
     const token = this.authService.getToken();
 
@@ -87,7 +67,7 @@ export class TemplateService {
     });
 
     return this.http.patch(
-      `${this.apiUrl}/api/UpdateTemplate`,
+      `${this.apiUrl}/api/UpdateCourse`,
       request,
       { headers }
     );

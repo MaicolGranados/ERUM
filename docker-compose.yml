@@ -1,5 +1,18 @@
 services:
 
+  frontend:
+    build:
+      context: ./Front
+      dockerfile: Dockerfile
+
+    container_name: erum-front
+
+    ports:
+      - "80:80"
+
+    depends_on:
+      - api
+
   api:
     build:
       context: .
