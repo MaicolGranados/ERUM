@@ -14,8 +14,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
 
       ConnectionStrings__DefaultConnection: >
-        Host=postgres;
-        Port=5432;
+        Host=2.25.180.118;
+        Port=5433;
         Database=dbErum;
         Username=postgres;
         Password=admin
@@ -34,7 +34,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: erum
+      POSTGRES_DB: dbErum
 
     ports:
       - "5433:5432"
