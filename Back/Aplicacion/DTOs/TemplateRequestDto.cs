@@ -8,11 +8,9 @@ namespace Aplicacion.DTOs
 {
     public class TemplateRequestDto
     {
-        public string Codigo { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public int IdTemplate { get; set; }
+        public int IdCourse { get; set; }
         public string Html { get; set; } = string.Empty;
         public string Imagen { get; set; } = string.Empty;
-        public double Costo { get; set; }
-        public DateTime FechaVigencia { get; set; }
     }
 }

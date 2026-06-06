@@ -1,0 +1,46 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Back/Dockerfile
+
+    container_name: erum-api
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+
+      ConnectionStrings__DefaultConnection: >
+        Host=postgres;
+        Port=5432;
+        Database=dbErum;
+        Username=postgres;
+        Password=admin
+
+      Settings__SecretKey: 8b823b3e5baee5baeuKQ22CeUs49tOvR
+      Settings__JwtIssuer: ErumApi
+      Settings__JwtAudience: ErumFront
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: erum
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

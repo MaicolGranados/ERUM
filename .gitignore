@@ -1,0 +1,35 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Publicación
+publish/
+
+# Configuración local
+appsettings.Development.json
+
+# Dependencias
+node_modules/
+
+# Build
+dist/
+
+# Logs
+logs/
+*.log
+
+# Variables de entorno
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

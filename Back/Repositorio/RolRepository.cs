@@ -39,7 +39,7 @@ namespace Repositorio
 
         public async Task<List<Roles>>GetAllAsync()
         {
-            return await _context.Roles
+            return await _context.Roles.OrderBy(x => x.Id)
                 .ToListAsync();
         }
     }

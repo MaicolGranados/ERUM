@@ -11,7 +11,6 @@ namespace Aplicacion.Interfaces.Repositorio
     {
         Task<List<Templates>> GetAllTemplateAsync();
         Task<Templates?> GetTemplateByIdAsync(int id);
-        Task<Templates?> GetTemplateByCodeAsync(string codigo);
         Task AddAsync(Templates template);
         Task UpdateAsync(Templates template);
         Task DeleteAsync(Templates template );

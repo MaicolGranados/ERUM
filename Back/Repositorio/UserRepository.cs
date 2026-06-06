@@ -21,7 +21,7 @@ namespace Repositorio
         
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _context.Users.Include(x => x.Roles)
+            return await _context.Users.Include(x => x.Roles).OrderBy(x => x.Id)
                 .ToListAsync();
         }
 

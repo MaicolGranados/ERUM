@@ -22,6 +22,45 @@ namespace Repositorio.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Entidades.Cursos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<double>("Costo")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Vigencia")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cursos", (string)null);
+                });
+
             modelBuilder.Entity("Entidades.Permisos", b =>
                 {
                     b.Property<int>("Id")
@@ -98,24 +137,11 @@ namespace Repositorio.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<double>("Costo")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<DateTime>("FechaVigencia")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CursoId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Html")
                         .IsRequired()
@@ -129,6 +155,8 @@ namespace Repositorio.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
 
                     b.ToTable("Templates", (string)null);
                 });
@@ -203,6 +231,17 @@ namespace Repositorio.Migrations
                     b.Navigation("Permiso");
 
                     b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("Entidades.Templates", b =>
+                {
+                    b.HasOne("Entidades.Cursos", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
                 });
 
             modelBuilder.Entity("Entidades.User", b =>

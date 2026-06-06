@@ -15,6 +15,7 @@ namespace Repositorio.Persistencia
         public DbSet<Permisos> Permisos => Set<Permisos>();
         public DbSet<PermisosRoles> PermisosRoles => Set<PermisosRoles>();
         public DbSet<Templates> Templates => Set<Templates>();
+        public DbSet<Cursos> Cursos => Set<Cursos>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -32,17 +32,67 @@ namespace Negocio
 
         public async Task<GenericResponseDto> AddTemplateAsync(TemplateRequestDto templateRequest)
         {
-            throw new NotImplementedException();
+
+
+            Entidades.Templates templates = new Entidades.Templates();
+            
+            templates.CursoId = templateRequest.IdCourse;
+            templates.Html = templateRequest.Html;
+            templates.Imagen = templateRequest.Imagen;
+            
+            await _templateRepository.AddAsync(templates);
+
+            return new GenericResponseDto
+            {
+                code = 201,
+                message = "Plantilla agregada exitosamente."
+            };
         }
 
         public async Task<GenericResponseDto> UpdateTemplateAsync(TemplateRequestDto templateRequest)
         {
-            throw new NotImplementedException();
+            var template = await _templateRepository.GetTemplateByIdAsync(templateRequest.IdTemplate);
+            if (template == null)
+            {
+                return new GenericResponseDto
+                {
+                    code = 404,
+                    message = "Plantilla no encontrada."
+                };
+            }
+
+            template.CursoId = templateRequest.IdCourse;
+            template.Html = templateRequest.Html;
+            template.Imagen = templateRequest.Imagen;
+
+            await _templateRepository.UpdateAsync(template);
+
+            return new GenericResponseDto
+            {
+                code = 200,
+                message = "Plantilla actualizada exitosamente."
+            };
         }
 
         public async Task<GenericResponseDto> DeleteTemplateAsync(int templateId)
         {
-            throw new NotImplementedException();
+            var template = await _templateRepository.GetTemplateByIdAsync(templateId);
+            if (template == null)
+            {
+                return new GenericResponseDto
+                {
+                    code = 404,
+                    message = "Plantilla no encontrada."
+                };
+            }
+
+            await _templateRepository.DeleteAsync(template);
+
+            return new GenericResponseDto
+            {
+                code = 200,
+                message = "Plantilla eliminada exitosamente."
+            };
         }
     }
 }

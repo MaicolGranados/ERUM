@@ -25,9 +25,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRolRepository,RolRepository>();
 builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
+builder.Services.AddScoped<ICursosRepository, CursosRepository>();
 //Negocio
 builder.Services.AddScoped<IAuth,Auth>();
 builder.Services.AddScoped<IAdministracionUsuario, AdministracionUsuario>();
+builder.Services.AddScoped<IAdministracionCursos, AdministracionCursos>();
+builder.Services.AddScoped<IAdministracionPlantillas, AdministracionPlantillas>();
 
 var key = Encoding.UTF8.GetBytes(
     builder.Configuration["Settings:SecretKey"]!);
@@ -94,5 +97,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.Run();

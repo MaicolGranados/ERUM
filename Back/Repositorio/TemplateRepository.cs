@@ -21,22 +21,15 @@ namespace Repositorio
         
         public async Task<List<Templates>> GetAllTemplateAsync()
         {
-            return await _context.Templates
+            return await _context.Templates.Include(x => x.Curso).OrderBy(x => x.Id)
                 .ToListAsync();
         }
 
         public async Task<Templates?> GetTemplateByIdAsync(int id)
         {
-            return await _context.Templates
+            return await _context.Templates.Include(x => x.Curso)
                 .FirstOrDefaultAsync(x =>
                     x.Id == id);
-        }
-
-        public async Task<Templates?> GetTemplateByCodeAsync(string codigo)
-        {
-            return await _context.Templates
-                .FirstOrDefaultAsync(x =>
-                    x.Codigo == codigo);
         }
 
         public async Task AddAsync(Templates template)

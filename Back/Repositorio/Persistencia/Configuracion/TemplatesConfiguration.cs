@@ -19,14 +19,6 @@ namespace Repositorio.Persistencia.Configuracion
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 
-            builder.Property(x => x.Codigo)
-                .HasMaxLength(50)
-                .IsRequired();
-
-            builder.Property(x => x.Description)
-                .HasMaxLength(500)
-                .IsRequired();
-
             builder.Property(x => x.Html)
                 .HasColumnType("text")
                 .IsRequired();
@@ -35,11 +27,11 @@ namespace Repositorio.Persistencia.Configuracion
                 .HasColumnType("text")
                 .IsRequired();
 
-            builder.Property(x => x.Costo)
-                .IsRequired();
-
-            builder.Property(x => x.FechaVigencia)
-                .IsRequired();
+            builder
+               .HasOne(x => x.Curso)
+               .WithMany()
+               .HasForeignKey(x => x.CursoId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

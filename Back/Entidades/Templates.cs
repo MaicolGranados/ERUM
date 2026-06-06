@@ -8,11 +8,9 @@ namespace Entidades
 {
     public class Templates : EntidadBase
     {
-        public string Codigo { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public int CursoId { get; set; }
+        public Cursos Curso { get; set; }
         public string Html { get; set; } = string.Empty;
         public string Imagen { get; set; } = string.Empty;
-        public double Costo { get; set; }
-        public DateTime FechaVigencia { get; set; }
     }
 }
