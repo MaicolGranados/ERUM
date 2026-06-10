@@ -33,6 +33,9 @@ namespace Negocio
             if (user == null)
                 return null;
 
+            user.LastLogin = DateTime.UtcNow;
+            await _userRepository.UpdateAsync(user);
+
             if (!user.IsActive)
                 return null;
 

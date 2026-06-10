@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aplicacion.DTOs
 {
-    public class TemplateRequestDto
+    public class PlantillaRequestDto
     {
         public int IdTemplate { get; set; }
         public int IdCourse { get; set; }

@@ -10,10 +10,10 @@ using Aplicacion.Interfaces.Repositorio;
 
 namespace Repositorio
 {
-    public class UserRepository : IUserRepository
+    public class UsuarioRepository : IUserRepository
     {
         private readonly AppDbContext _context;
-        public UserRepository(
+        public UsuarioRepository(
             AppDbContext context)
         {
             _context = context;

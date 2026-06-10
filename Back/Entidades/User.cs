@@ -16,7 +16,7 @@ namespace Entidades
         public int RolesId { get; set; }
 
         // Navigation
-        public Roles Roles { get; set; }
+        public Roles Roles { get; set; } = null!;
 
         public bool IsActive { get; set; } = true;
 

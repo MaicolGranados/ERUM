@@ -22,7 +22,7 @@ namespace Negocio
             _configuracion = configuracion.Value;
             _rolRepository = rolRepository;
         }
-        public async Task<GenericResponseDto> CreateUser(UserRequestDto userRequest)
+        public async Task<GenericResponseDto> CreateUser(UsuarioRequestDto userRequest)
         {
             if (userRequest == null) return new GenericResponseDto
             {
@@ -52,8 +52,7 @@ namespace Negocio
                 Email = userRequest.Email,
                 RolesId = userRequest.IdRol,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(_configuracion.DefaultPassword),
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
+                IsActive = true
             };
 
             await _userRepository.AddAsync(user);
@@ -93,7 +92,7 @@ namespace Negocio
                 message = "No se encontraron usuarios."
             };
 
-            user.ForEach(u => { u.PasswordHash = null; });
+            user.ForEach(u => { u.PasswordHash = ""; });
 
             return new GenericResponseDto
             {
@@ -102,7 +101,7 @@ namespace Negocio
             };
         }
 
-        public async Task<GenericResponseDto> UpdateUser(UserRequestDto userRequest)
+        public async Task<GenericResponseDto> UpdateUser(UsuarioRequestDto userRequest)
         {
             if (userRequest == null) return new GenericResponseDto
             {
@@ -127,6 +126,7 @@ namespace Negocio
             userExistente.Email = userRequest.Email;
             userExistente.RolesId = userRequest.IdRol;
             userExistente.IsActive = userRequest.Activo;
+            userExistente.UpdatedAt = DateTime.UtcNow;
 
             await _userRepository.UpdateAsync(userExistente);
 

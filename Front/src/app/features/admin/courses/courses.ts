@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../enviroments/environment';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TemplateService } from '../../../core/services/template.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule,FormsModule, DragDropModule],
+  imports: [CommonModule,FormsModule, DragDropModule,MatTooltipModule],
   templateUrl: './courses.html'
 })
 export class Courses implements OnInit {
@@ -20,6 +21,9 @@ export class Courses implements OnInit {
 
   templates: any[] = [];
   courses: any[] = [];
+  categories: any[] = [];
+  subcategories: any[] = [];
+  costs: any[] = [];
   filteredCourses: any[] = [];
 
   searchText: string = '';
@@ -75,6 +79,25 @@ export class Courses implements OnInit {
   idTemplate = 0;
   availableCourses: any[] = [];
   isEditingTemplate = false;
+
+  showAdminMenu = false;
+
+  modalAdminVisible = false;
+  modalType = '';
+
+  openModalAdmin(type: string): void {
+
+    this.modalType = type;
+    this.modalAdminVisible = true;
+    this.showAdminMenu = false;
+
+  }
+
+  closeModalAdmin(): void {
+
+    this.modalAdminVisible = false;
+
+  }
 
   ngOnInit(): void {
     this.loadCourses();
@@ -206,7 +229,8 @@ export class Courses implements OnInit {
     this.filteredCourses = this.courses.filter(course =>
       course.codigo?.toLowerCase().includes(search) ||
       course.nombre?.toLowerCase().includes(search) ||
-      course.descripcion?.toLowerCase().includes(search)
+      course.descripcion?.toLowerCase().includes(search) ||
+      course.subCategoria?.nombre?.toLowerCase().includes(search)
     );
 
   }

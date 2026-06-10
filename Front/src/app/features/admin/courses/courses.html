@@ -4,36 +4,80 @@
     Cursos ({{ filteredCourses.length }})
   </h2>
 
-  <div class="flex gap-3">
+  <div class="flex gap-3 items-center">
 
-    <input
-      type="text"
-      [(ngModel)]="searchText"
-      (input)="filterCourse()"
-      placeholder="Buscar curso..."
-      class="border rounded-lg px-4 py-2 w-72">
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    (input)="filterCourse()"
+    placeholder="Buscar curso..."
+    class="border rounded-lg px-4 py-2 w-72">
 
+  <!-- Dropdown -->
+  <div class="relative">
     <button
-      (click)="newCourse()"
-      class="bg-green-600 text-white px-4 py-2 rounded-lg
-             hover:bg-green-700 flex items-center gap-2">
+      (click)="showAdminMenu = !showAdminMenu"
+      class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
 
-      <i class="fa-solid fa-user-plus"></i>
-      Nuevo Curso
+      <i class="fa-solid fa-gear"></i>
+      Administración
+      <i class="fa-solid fa-chevron-down"></i>
 
     </button>
 
-    <button
-      (click)="newTemplate()"
-      class="bg-green-600 text-white px-4 py-2 rounded-lg
-             hover:bg-green-700 flex items-center gap-2">
+    @if(showAdminMenu){
 
-      <i class="fa-solid fa-user-plus"></i>
-      Nueva Plantilla
+      <div class="absolute mt-2 bg-white border rounded-lg shadow-lg w-56 z-50">
 
-    </button>
+        <button
+          (click)="openModalAdmin('categorias')"
+          class="w-full text-left px-4 py-3 hover:bg-slate-100">
+
+          Categorías
+
+        </button>
+
+        <button
+          (click)="openModalAdmin('subcategorias')"
+          class="w-full text-left px-4 py-3 hover:bg-slate-100">
+
+          Subcategorías
+
+        </button>
+
+        <button
+          (click)="openModalAdmin('costos')"
+          class="w-full text-left px-4 py-3 hover:bg-slate-100">
+
+          Costos
+
+        </button>
+
+      </div>
+
+    }
 
   </div>
+
+  <button
+    (click)="newCourse()"
+    class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
+
+    <i class="fa-solid fa-book"></i>
+    Nuevo Curso
+
+  </button>
+
+  <button
+    (click)="newTemplate()"
+    class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
+
+    <i class="fa-solid fa-file-circle-plus"></i>
+    Nueva Plantilla
+
+  </button>
+
+</div>
 
 </div>
 
@@ -46,6 +90,7 @@
       <th class="text-left p-4">Código</th>
       <th class="text-left p-4">Nombre</th>
       <th class="text-left p-4">Descripción</th>
+      <th class="text-left p-4">Sub Categoría</th>
       <th class="text-left p-4">Vigencia</th>
       <th class="text-left p-4">Costo</th>
       <th class="p-4"></th>
@@ -68,6 +113,7 @@
 <div class="flex justify-center items-center gap-4">
 
     <button
+    matTooltip="Editar Curso"
       (click)="editCourse(courses)"
       class="text-blue-600 hover:text-blue-800">
 
@@ -76,12 +122,14 @@
     </button>
 
     <button
+    matTooltip="Editar plantilla"
     (click)="editTemplate(courses)"
     class="text-amber-600">
     <i class="fa-solid fa-file-pen"></i>
   </button>
 
     <button
+    matTooltip="Visualizar plantilla"
       (click)="previewTemplate(courses)"
       class="text-sky-600 hover:text-sky-800">
 
@@ -153,6 +201,25 @@
 
       </td>
 
+      <!-- SUB CATEGORIA -->
+
+      <td class="p-4">
+
+        @if(editingCourseId === courses.id) {
+
+          <input
+            [(ngModel)]="editModel.description"
+            class="border rounded px-2 py-1 w-full">
+
+        } @else {
+
+          {{ courses.subCategoria.nombre }}
+
+        }
+
+      </td>
+
+
       <!-- VIGENCIA -->
 
       <td class="p-4">
@@ -189,7 +256,7 @@
 
         } @else {
 
-          {{ courses.costo | currency }}
+          {{ courses.costos.valor | currency }}
 
         }
 
@@ -202,6 +269,7 @@
         @if(editingCourseId === courses.id) {
 
           <button
+          matTooltip="Guardar Cambios"
             (click)="saveCourse()"
             class="text-green-600 mr-2">
 
@@ -210,6 +278,7 @@
           </button>
 
           <button
+          matTooltip="Descartar Cambios"
             (click)="cancelEdit()"
             class="text-gray-600">
 
@@ -223,6 +292,7 @@
           <div class="flex gap-3">
 
             <button
+            matTooltip="Eliminar Curso"
               (click)="deleteCourse(courses.id)"
               class="text-red-600">
               <i class="fa-solid fa-trash"></i>
@@ -602,6 +672,137 @@
       </div>
 
     </div>
+
+  </div>
+
+</div>
+
+}
+
+
+@if(modalAdminVisible){
+
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-5xl p-6">
+
+    <div class="flex justify-between items-center mb-4">
+
+      <h2 class="text-xl font-bold">
+
+        @if(modalType === 'categorias'){
+          Categorías
+        }
+
+        @if(modalType === 'subcategorias'){
+          Subcategorías
+        }
+
+        @if(modalType === 'costos'){
+          Costos
+        }
+
+      </h2>
+
+      <button
+        (click)="closeModalAdmin()"
+        class="text-gray-600 hover:text-red-600">
+
+        <i class="fa-solid fa-xmark text-xl"></i>
+
+      </button>
+
+    </div>
+
+    <!-- Tabla -->
+
+    <table class="w-full">
+
+      <thead>
+
+        <tr class="border-b">
+
+          <th class="p-4">Código</th>
+          <th class="p-4">Nombre</th>
+          <th class="p-4">Descripción</th>
+          <th class="p-4">Acciones</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @if(modalType === 'categorias'){
+
+          @for(category of categories; track category.id){
+
+            <tr class="border-b">
+
+              <td class="p-4">{{ category.codigo }}</td>
+              <td class="p-4">{{ category.nombre }}</td>
+              <td class="p-4">{{ category.descripcion }}</td>
+
+              <td class="p-4">
+                <button class="text-blue-600">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </td>
+
+            </tr>
+
+          }
+
+        }
+
+        @if(modalType === 'subcategorias'){
+
+          @for(subcategory of subcategories; track subcategory.id){
+
+            <tr class="border-b">
+
+              <td class="p-4">{{ subcategory.codigo }}</td>
+              <td class="p-4">{{ subcategory.nombre }}</td>
+              <td class="p-4">{{ subcategory.descripcion }}</td>
+
+              <td class="p-4">
+                <button class="text-blue-600">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </td>
+
+            </tr>
+
+          }
+
+        }
+
+        @if(modalType === 'costos'){
+
+          @for(cost of costs; track cost.id){
+
+            <tr class="border-b">
+
+              <td class="p-4">{{ cost.codigo }}</td>
+              <td class="p-4">{{ cost.nombre }}</td>
+              <td class="p-4">{{ cost.valor | currency }}</td>
+
+              <td class="p-4">
+                <button class="text-blue-600">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </td>
+
+            </tr>
+
+          }
+
+        }
+
+      </tbody>
+
+    </table>
 
   </div>
 

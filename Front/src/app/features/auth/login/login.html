@@ -64,6 +64,7 @@
           </label>
 
           <select
+          id="sel_tipo_doc_login"
             class="w-full h-14 rounded-xl border border-slate-300
                    px-4 outline-none focus:ring-4 focus:ring-red-200
                    focus:border-red-500 transition"
@@ -84,6 +85,7 @@
           </label>
 
           <input
+          id="in_num_doc_login"
             type="text"
             placeholder="Ingresa tu documento"
             class="w-full h-14 rounded-xl border border-slate-300
@@ -95,9 +97,10 @@
         </div>
 
         <button
-          class="w-full h-14 rounded-xl bg-red-600 text-white
+        id="btn_login"
+          class="w-full h-14 rounded-xl bg-[#f59500] text-white
                  font-semibold text-lg transition-all duration-300
-                 hover:bg-red-700 hover:-translate-y-1"
+                 hover:bg-[#1F1346] hover:-translate-y-1"
         >
           Consultar
         </button>
@@ -110,9 +113,10 @@
           </p>
 
           <button
+          id="btn_show_login_adm"
             (click)="showLogin = true"
-            class="mt-2 text-red-600 font-semibold
-                   hover:text-red-700 transition"
+            class="mt-2 text-[#f59500] font-semibold
+                   hover:text-[#1F1346] transition"
           >
             Inicia sesión
           </button>
@@ -152,6 +156,7 @@
           </label>
 
           <input
+          id="in_user_admin"
             type="text"
             [(ngModel)]="user"
             placeholder="Ingresa tu usuario"
@@ -171,6 +176,7 @@
           </label>
 
           <input
+          id="in_pwd_admin"
             type="password"
             [(ngModel)]="password"
             placeholder="Ingresa tu contraseña"
@@ -182,10 +188,12 @@
 
         </div>
 
-        <button (click)="login()"
-          class="w-full h-14 rounded-xl bg-yellow-600 text-white
+        <button
+        id="btn_login_admin"
+        (click)="login()"
+          class="w-full h-14 rounded-xl bg-[#f59500] text-white
                  font-semibold text-lg transition-all duration-300
-                 hover:bg-red-700 hover:-translate-y-1"
+                 hover:bg-[#1F1346] hover:-translate-y-1"
         >
           Ingresar
         </button>
@@ -194,6 +202,7 @@
         <div class="mt-10 text-center">
 
           <button
+          id="btn_return"
             (click)="showLogin = false"
             class="text-slate-500 hover:text-slate-700 transition"
           >

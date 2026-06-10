@@ -9,10 +9,10 @@ namespace Aplicacion.Interfaces.Negocio
 {
     public interface IAdministracionUsuario
     {
-        Task<GenericResponseDto> CreateUser(UserRequestDto userRequest);
+        Task<GenericResponseDto> CreateUser(UsuarioRequestDto userRequest);
         Task<GenericResponseDto> DeleteUser(int userId);
         Task<GenericResponseDto> GetAllUsers();
-        Task<GenericResponseDto> UpdateUser(UserRequestDto userRequest);
+        Task<GenericResponseDto> UpdateUser(UsuarioRequestDto userRequest);
         Task<GenericResponseDto> ResetPassword(int userId, string password);
     }
 }

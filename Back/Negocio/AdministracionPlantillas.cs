@@ -30,7 +30,7 @@ namespace Negocio
             return new GenericResponseDto { code = 200, message = templates };
         }
 
-        public async Task<GenericResponseDto> AddTemplateAsync(TemplateRequestDto templateRequest)
+        public async Task<GenericResponseDto> AddTemplateAsync(PlantillaRequestDto templateRequest)
         {
 
 
@@ -39,7 +39,7 @@ namespace Negocio
             templates.CursoId = templateRequest.IdCourse;
             templates.Html = templateRequest.Html;
             templates.Imagen = templateRequest.Imagen;
-            
+
             await _templateRepository.AddAsync(templates);
 
             return new GenericResponseDto
@@ -49,7 +49,7 @@ namespace Negocio
             };
         }
 
-        public async Task<GenericResponseDto> UpdateTemplateAsync(TemplateRequestDto templateRequest)
+        public async Task<GenericResponseDto> UpdateTemplateAsync(PlantillaRequestDto templateRequest)
         {
             var template = await _templateRepository.GetTemplateByIdAsync(templateRequest.IdTemplate);
             if (template == null)
@@ -64,6 +64,7 @@ namespace Negocio
             template.CursoId = templateRequest.IdCourse;
             template.Html = templateRequest.Html;
             template.Imagen = templateRequest.Imagen;
+            template.UpdatedAt = DateTime.UtcNow;
 
             await _templateRepository.UpdateAsync(template);
 

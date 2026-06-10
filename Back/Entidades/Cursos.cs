@@ -12,6 +12,9 @@ namespace Entidades
         public string Nombre { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
         public int Vigencia { get; set; }
-        public double Costo { get; set; }
+        public int idSubCategoria { get; set; }
+        public SubCategoria SubCategoria { get; set; } = null!;
+        public int idCosto { get; set; }
+        public Costos Costos { get; set; } = null!;
     }
 }

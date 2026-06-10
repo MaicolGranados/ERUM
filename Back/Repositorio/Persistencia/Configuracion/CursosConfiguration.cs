@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Persistencia.Configuracion
 {
-    public class CoursesConfiguration : IEntityTypeConfiguration<Cursos>
+    public class CursosConfiguration : IEntityTypeConfiguration<Cursos>
     {
         public void Configure(EntityTypeBuilder<Cursos> builder)
         {
@@ -34,9 +34,15 @@ namespace Repositorio.Persistencia.Configuracion
             builder.Property(x => x.Vigencia)
                 .IsRequired();
 
-            builder.Property(x => x.Costo)
-                .IsRequired();
+            builder
+                .HasOne(x => x.SubCategoria)
+                .WithMany()
+                .HasForeignKey(x => x.idSubCategoria);
 
+            builder
+                .HasOne(x => x.Costos)
+                .WithMany()
+                .HasForeignKey(x => x.idCosto);
         }
     }
 }

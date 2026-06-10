@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Persistencia.Configuracion
 {
-    public class TemplatesConfiguration : IEntityTypeConfiguration<Templates>
+    public class PlantillasConfiguration : IEntityTypeConfiguration<Templates>
     {
         public void Configure(EntityTypeBuilder<Templates> builder)
         {
-            builder.ToTable("Templates");
+            builder.ToTable("Plantillas");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)

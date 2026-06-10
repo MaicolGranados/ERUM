@@ -7,6 +7,7 @@
   <div class="flex gap-3">
 
     <input
+    id="in_search_users"
       type="text"
       [(ngModel)]="searchText"
       (input)="filterUsers()"
@@ -14,9 +15,9 @@
       class="border rounded-lg px-4 py-2 w-72">
 
     <button
+    id="btn_new_user"
       (click)="newUser()"
-      class="bg-green-600 text-white px-4 py-2 rounded-lg
-             hover:bg-green-700 flex items-center gap-2">
+      class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
 
       <i class="fa-solid fa-user-plus"></i>
       Nuevo Usuario
@@ -56,12 +57,15 @@
         @if(editingUserId !== user.id) {
 
           <button
+          id="btn_edit_user"
+            matTooltip="Editar Usuario"
             (click)="editUser(user)"
             class="text-blue-600">
 
           <i class="fa-solid fa-pen"></i>
 
           </button>
+
 
         }
 
@@ -80,6 +84,7 @@
         @if(editingUserId === user.id) {
 
           <input
+          id="in_email_user_edit"
             [(ngModel)]="editModel.email"
             class="border rounded px-2 py-1 w-full">
 
@@ -98,6 +103,7 @@
         @if(editingUserId === user.id) {
 
           <select
+          id="sel_id_rol"
             [(ngModel)]="editModel.idRol"
             class="border rounded px-2 py-1">
 
@@ -126,6 +132,7 @@
         @if(editingUserId === user.id) {
 
           <select
+          id="sel_active_user"
             [(ngModel)]="editModel.activo"
             class="border rounded px-2 py-1">
 
@@ -162,6 +169,7 @@
         @if(editingUserId === user.id) {
 
           <button
+          id="btn_save_user_edit"
             (click)="saveUser()"
             class="text-green-600 mr-2">
 
@@ -170,6 +178,7 @@
           </button>
 
           <button
+          id="btn_cancel_user_edit"
             (click)="cancelEdit()"
             class="text-gray-600">
 
@@ -183,12 +192,15 @@
           <div class="flex gap-3">
 
             <button
+            id="btn_reset_password_user"
+            matTooltip="Restablecer clave"
               (click)="resetPassword(user.id)"
               class="text-blue-600">
               <i class="fa-solid fa-rotate-right"></i>
             </button>
 
             <button
+            matTooltip="Eliminar usuario"
               (click)="deleteUser(user.id)"
               class="text-red-600">
               <i class="fa-solid fa-trash"></i>

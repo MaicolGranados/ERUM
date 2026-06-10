@@ -10,42 +10,42 @@ using Aplicacion.Interfaces.Repositorio;
 
 namespace Repositorio
 {
-    public class TemplateRepository : ITemplateRepository
+    public class CostoRepository : ICostoRepository
     {
         private readonly AppDbContext _context;
-        public TemplateRepository(
+        public CostoRepository(
             AppDbContext context)
         {
             _context = context;
         }
         
-        public async Task<List<Templates>> GetAllTemplateAsync()
+        public async Task<List<Costos>> GetAllCostAsync()
         {
-            return await _context.Templates.Include(x => x.Curso).OrderBy(x => x.Id)
+            return await _context.Costos.OrderBy(x => x.Id)
                 .ToListAsync();
         }
 
-        public async Task<Templates?> GetTemplateByIdAsync(int id)
+        public async Task<Costos?> GetCostByIdAsync(int id)
         {
-            return await _context.Templates.Include(x => x.Curso)
+            return await _context.Costos
                 .FirstOrDefaultAsync(x =>
                     x.Id == id);
         }
 
-        public async Task AddAsync(Templates template)
+        public async Task AddAsync(Costos costo)
         {
-            await _context.Templates.AddAsync(template);
+            await _context.Costos.AddAsync(costo);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Templates template)
+        public async Task UpdateAsync(Costos costo)
         {
-            _context.Templates.Update(template);
+            _context.Costos.Update(costo);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(Templates template)
+        public async Task DeleteAsync(Costos costo)
         {
-            _context.Templates.Remove(template);
+            _context.Costos.Remove(costo);
             await _context.SaveChangesAsync();
         }
     }

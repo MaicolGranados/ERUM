@@ -2,11 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { UsersService } from '../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,MatTooltipModule],
   templateUrl: './users.html'
 })
 export class Users implements OnInit {
@@ -74,7 +76,13 @@ export class Users implements OnInit {
 
           this.showCreateModal = false;
           this.loadUsers();
-          alert("Usuario creado exitosamente.");
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Usuario creado exitosamente.',
+            confirmButtonColor: '#fea419'
+          });
 
         },
         error: err => {
@@ -171,44 +179,79 @@ export class Users implements OnInit {
   }
 
   resetPassword(id: number): void{
-  this.usersService.resetPassword(id)
-      .subscribe({
-        next: () => {
 
-          alert('Clave restablecida');
+    Swal.fire({
+    title: '¿Desea restablecer la clave del usuario?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, restablecer',
+    cancelButtonText: 'Cancelar'
+    }).then(result => {
 
-          this.loadUsers();
+      if (result.isConfirmed) {
 
-        },
-        error: err => {
 
-          console.error(err);
+        this.usersService.resetPassword(id)
+          .subscribe({
+            next: () => {
 
-        }
-      });
+              Swal.fire(
+                  'Restablecido',
+                  'Clave restablecida correctamente',
+                  'success'
+                );
+
+                this.loadUsers();
+
+            },
+            error: err => {
+
+              console.error(err);
+
+            }
+          });
+
+      }
+
+    });
 
   }
 
   deleteUser(id: number): void {
 
-  if (!confirm('¿Desea eliminar este usuario?')) {
-    return;
-  }
+     Swal.fire({
+    title: '¿Desea eliminar este usuario?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+    }).then(result => {
 
-    this.usersService.deleteUser(id)
-      .subscribe({
-        next: () => {
+      if (result.isConfirmed) {
 
-          alert('Usuario eliminado');
+        this.usersService.deleteUser(id)
+        .subscribe({
+          next: () => {
 
-          this.loadUsers();
+            Swal.fire(
+              'Eliminado',
+              'Usuario eliminado correctamente',
+              'success'
+            );
 
-        },
-        error: err => {
+            this.loadUsers();
 
-          console.error(err);
+          },
+          error: err => {
 
-        }
-      });
+            console.error(err);
+
+          }
+        });
+
+      }
+
+    });
+
   }
 }

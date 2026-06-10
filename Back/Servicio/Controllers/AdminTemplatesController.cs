@@ -28,7 +28,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpPost("api/CreateTemplate")]
-        public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequestDto templateRequest)
+        public async Task<IActionResult> CreateTemplate([FromBody] PlantillaRequestDto templateRequest)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpDelete("api/DeleteTemplate")]
-        public async Task<IActionResult> DeleteTemplate([FromBody] TemplateRequestDto templateRequest)
+        public async Task<IActionResult> DeleteTemplate([FromBody] PlantillaRequestDto templateRequest)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpPatch("api/UpdateTemplate")]
-        public async Task<IActionResult> UpdateTemplate([FromBody] TemplateRequestDto templateRequest)
+        public async Task<IActionResult> UpdateTemplate([FromBody] PlantillaRequestDto templateRequest)
         {
             try
             {

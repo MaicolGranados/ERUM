@@ -22,10 +22,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 //Repo
-builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IUserRepository,UsuarioRepository>();
 builder.Services.AddScoped<IRolRepository,RolRepository>();
-builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
+builder.Services.AddScoped<ITemplateRepository, PlantillaRepository>();
 builder.Services.AddScoped<ICursosRepository, CursosRepository>();
+builder.Services.AddScoped<ICostoRepository, CostoRepository>();
+builder.Services.AddScoped<ISubCategoriaRepository, SubCategoriaRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<IPermisoRepository, PermisoRepository>();
+
 //Negocio
 builder.Services.AddScoped<IAuth,Auth>();
 builder.Services.AddScoped<IAdministracionUsuario, AdministracionUsuario>();

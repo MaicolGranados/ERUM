@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Persistencia.Configuracion
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class UsuarioConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {

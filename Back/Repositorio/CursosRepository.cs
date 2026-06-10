@@ -18,16 +18,28 @@ namespace Repositorio
         {
             _context = context;
         }
-        
+
         public async Task<List<Cursos>> GetAllCursosAsync()
         {
-            return await _context.Cursos.OrderBy(x => x.Id)
+            return await _context.Cursos.OrderBy(x => x.Id).Include(x => x.SubCategoria).Include(x => x.Costos).Include(x => x.SubCategoria.Categoria)
                 .ToListAsync();
+        }
+
+        public async Task<List<Cursos>> GetCursosBySubCategoriaIdAsync(int subCategoriaId)
+        {
+            return await _context.Cursos.Where(x => x.idSubCategoria == subCategoriaId).Include(x => x.SubCategoria).Include(x => x.SubCategoria.Categoria)
+                .Include(x => x.Costos).ToListAsync();
+        }
+
+        public async Task<List<Cursos>> GetCursosByCostoIdAsync(int costoId)
+        {
+            return await _context.Cursos.Where(x => x.idCosto == costoId).Include(x => x.SubCategoria)
+                .Include(x => x.Costos).ToListAsync();
         }
 
         public async Task<Cursos?> GetCursoByIdAsync(int id)
         {
-            return await _context.Cursos
+            return await _context.Cursos.Include(x => x.SubCategoria).Include(x => x.Costos)
                 .FirstOrDefaultAsync(x =>
                     x.Id == id);
         }

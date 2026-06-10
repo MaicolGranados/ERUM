@@ -22,6 +22,56 @@ namespace Repositorio.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Entidades.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categorias", (string)null);
+                });
+
+            modelBuilder.Entity("Entidades.Costos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("Valor")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Costos", (string)null);
+                });
+
             modelBuilder.Entity("Entidades.Cursos", b =>
                 {
                     b.Property<int>("Id")
@@ -34,9 +84,6 @@ namespace Repositorio.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<double>("Costo")
-                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -56,7 +103,17 @@ namespace Repositorio.Migrations
                     b.Property<int>("Vigencia")
                         .HasColumnType("integer");
 
+                    b.Property<int>("idCosto")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("idSubCategoria")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("idCosto");
+
+                    b.HasIndex("idSubCategoria");
 
                     b.ToTable("Cursos", (string)null);
                 });
@@ -129,6 +186,35 @@ namespace Repositorio.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Entidades.SubCategoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("idCategoria")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("idCategoria");
+
+                    b.ToTable("SubCategorias", (string)null);
+                });
+
             modelBuilder.Entity("Entidades.Templates", b =>
                 {
                     b.Property<int>("Id")
@@ -158,7 +244,7 @@ namespace Repositorio.Migrations
 
                     b.HasIndex("CursoId");
 
-                    b.ToTable("Templates", (string)null);
+                    b.ToTable("Plantillas", (string)null);
                 });
 
             modelBuilder.Entity("Entidades.User", b =>
@@ -214,6 +300,25 @@ namespace Repositorio.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Entidades.Cursos", b =>
+                {
+                    b.HasOne("Entidades.Costos", "Costos")
+                        .WithMany()
+                        .HasForeignKey("idCosto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entidades.SubCategoria", "SubCategoria")
+                        .WithMany()
+                        .HasForeignKey("idSubCategoria")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Costos");
+
+                    b.Navigation("SubCategoria");
+                });
+
             modelBuilder.Entity("Entidades.PermisosRoles", b =>
                 {
                     b.HasOne("Entidades.Permisos", "Permiso")
@@ -231,6 +336,17 @@ namespace Repositorio.Migrations
                     b.Navigation("Permiso");
 
                     b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("Entidades.SubCategoria", b =>
+                {
+                    b.HasOne("Entidades.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("idCategoria")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
                 });
 
             modelBuilder.Entity("Entidades.Templates", b =>

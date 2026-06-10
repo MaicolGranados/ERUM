@@ -12,10 +12,10 @@ namespace Entidades
     {
         public int RoleId { get; set; }
 
-        public Roles Rol { get; set; }
+        public Roles Rol { get; set; } = null!;
 
         public int PermissionId { get; set; }
 
-        public Permisos Permiso { get; set; }
+        public Permisos Permiso { get; set; } = null!;
     }
 }

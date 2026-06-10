@@ -10,8 +10,8 @@ namespace Aplicacion.Interfaces.Negocio
     public interface IAdministracionPlantillas
     {
         Task<GenericResponseDto> GetAllTemplatesAsync();
-        Task<GenericResponseDto> AddTemplateAsync(TemplateRequestDto templateRequest);
-        Task<GenericResponseDto> UpdateTemplateAsync(TemplateRequestDto templateRequest);
+        Task<GenericResponseDto> AddTemplateAsync(PlantillaRequestDto templateRequest);
+        Task<GenericResponseDto> UpdateTemplateAsync(PlantillaRequestDto templateRequest);
         Task<GenericResponseDto> DeleteTemplateAsync(int templateId);
     }
 }

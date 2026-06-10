@@ -39,7 +39,7 @@ namespace Repositorio.Persistencia
                 var adminUser = new User
                 {
                     Username = "admin",
-                    Email = "admin@fundacionerum.org.co\r\n",
+                    Email = "admin@fundacionerum.org.co",
                     RolesId = adminRole.Id,
 
                     PasswordHash =
@@ -55,8 +55,6 @@ namespace Repositorio.Persistencia
 
                 await context.SaveChangesAsync();
             }
-
-            
 
         }
     }

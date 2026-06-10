@@ -9,7 +9,7 @@ namespace Entidades
     public class Templates : EntidadBase
     {
         public int CursoId { get; set; }
-        public Cursos Curso { get; set; }
+        public Cursos Curso { get; set; } = null!;
         public string Html { get; set; } = string.Empty;
         public string Imagen { get; set; } = string.Empty;
     }

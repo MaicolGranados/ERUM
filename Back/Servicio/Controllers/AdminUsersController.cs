@@ -28,7 +28,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpPost("api/CreateUser")]
-        public async Task<IActionResult> CreateUser([FromBody] UserRequestDto userRequest)
+        public async Task<IActionResult> CreateUser([FromBody] UsuarioRequestDto userRequest)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpDelete("api/DeleteUser")]
-        public async Task<IActionResult> DeleteUser([FromBody] UserRequestDto userRequest)
+        public async Task<IActionResult> DeleteUser([FromBody] UsuarioRequestDto userRequest)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace AcreditacionErumApi.Controllers
         }
 
         [HttpPatch("api/UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromBody] UserRequestDto userRequest)
+        public async Task<IActionResult> UpdateUser([FromBody] UsuarioRequestDto userRequest)
         {
             try
             {
