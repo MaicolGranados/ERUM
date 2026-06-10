@@ -29,7 +29,7 @@ services:
       ConnectionStrings__DefaultConnection: >
         Host=2.25.180.118;
         Port=5433;
-        Database=dbErum;
+        Database=dbErum_QA;
         Username=postgres;
         Password=admin
 
@@ -47,7 +47,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: dbErum
+      POSTGRES_DB: dbErum_QA
 
     ports:
       - "5433:5432"
