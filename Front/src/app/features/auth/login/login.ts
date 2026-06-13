@@ -7,10 +7,9 @@ import { AuthService } from '../../../core/services/auth.service';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './login.html'
+  templateUrl: './login.html',
 })
 export class Login {
-
   showLogin = false;
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -19,29 +18,18 @@ export class Login {
   password = '';
 
   login(): void {
+    this.authService.login(this.user, this.password).subscribe({
+      next: (response) => {
+        console.log(response);
 
-    this.authService
-      .login(this.user, this.password)
-      .subscribe({
+        this.router.navigate(['/admin']);
+      },
 
-        next: (response) => {
+      error: (error) => {
+        console.error(error);
 
-          console.log(response);
-
-          this.router.navigate(['/admin']);
-
-        },
-
-        error: (error) => {
-
-          console.error(error);
-
-          alert('Credenciales inválidas');
-
-        }
-
-      });
-
+        alert('Credenciales inválidas');
+      },
+    });
   }
-
 }

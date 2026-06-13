@@ -1,220 +1,143 @@
 <div class="flex h-screen w-full overflow-hidden">
-
   <!-- HERO -->
   <div class="relative hidden lg:flex w-3/5">
-
-    <img
-      src="images/FondoLogin.jpg"
-      class="w-full h-full object-cover"
-      alt=""
-    />
+    <img src="images/FondoLogin.jpg" class="w-full h-full object-cover" alt="" />
 
     <div class="absolute inset-0 bg-black/70"></div>
 
     <div class="absolute bottom-20 left-16 z-10 text-white max-w-xl">
-
-      <h1 class="text-6xl font-bold mb-6">
-        ERUM
-      </h1>
+      <h1 class="text-6xl font-bold mb-6">ERUM</h1>
 
       <p class="text-2xl text-gray-200 leading-relaxed">
-        Respuesta inmediata,
-        coordinación eficiente y
-        compromiso con la vida.
+        Respuesta inmediata, coordinación eficiente y compromiso con la vida.
       </p>
-
     </div>
-
   </div>
 
   <!-- RIGHT -->
-  <div class="flex w-full lg:w-2/5 items-center justify-center bg-slate-100 overflow-hidden relative">
-
+  <div
+    class="flex w-full lg:w-2/5 items-center justify-center bg-slate-100 overflow-hidden relative"
+  >
     <!-- CONTAINER -->
     <div class="relative w-full max-w-md h-[650px] overflow-hidden">
-
       <!-- CONSULTAR -->
-        <div
-          class="absolute inset-0 bg-white rounded-3xl shadow-2xl p-10
-                transition-all duration-700 ease-in-out"
-
-          [class.translate-x-0]="!showLogin"
-          [class.-translate-x-full]="showLogin"
-        >
-
+      <div
+        class="absolute inset-0 bg-white rounded-3xl shadow-2xl p-10 transition-all duration-700 ease-in-out"
+        [class.translate-x-0]="!showLogin"
+        [class.-translate-x-full]="showLogin"
+      >
         <div class="flex justify-center mb-8">
-
-          <img
-            src="images/Logo.png"
-            class="w-24"
-            alt=""
-          />
-
+          <img src="images/Logo.png" class="w-24" alt="" />
         </div>
 
-        <h2 class="text-3xl font-bold text-center text-slate-800 mb-8">
-          Consultar acreditación
-        </h2>
+        <h2 class="text-3xl font-bold text-center text-slate-800 mb-8">Consultar acreditación</h2>
 
         <!-- TIPO DOC -->
         <div class="mb-5">
-
-          <label class="block mb-2 text-sm text-slate-600">
-            Tipo documento
-          </label>
+          <label class="block mb-2 text-sm text-slate-600"> Tipo documento </label>
 
           <select
-          id="sel_tipo_doc_login"
-            class="w-full h-14 rounded-xl border border-slate-300
-                   px-4 outline-none focus:ring-4 focus:ring-red-200
-                   focus:border-red-500 transition"
+            id="sel_tipo_doc_login"
+            class="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:ring-4 focus:ring-red-200 focus:border-red-500 transition"
           >
             <option>CC</option>
             <option>CE</option>
             <option>TI</option>
             <option>Pasaporte</option>
           </select>
-
         </div>
 
         <!-- NUM DOC -->
         <div class="mb-8">
-
-          <label class="block mb-2 text-sm text-slate-600">
-            Número documento
-          </label>
+          <label class="block mb-2 text-sm text-slate-600"> Número documento </label>
 
           <input
-          id="in_num_doc_login"
+            id="in_num_doc_login"
             type="text"
             placeholder="Ingresa tu documento"
-            class="w-full h-14 rounded-xl border border-slate-300
-                   px-4 outline-none transition
-                   focus:ring-4 focus:ring-red-200
-                   focus:border-red-500"
+            class="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none transition focus:ring-4 focus:ring-red-200 focus:border-red-500"
           />
-
         </div>
 
         <button
-        id="btn_login"
-          class="w-full h-14 rounded-xl bg-[#f59500] text-white
-                 font-semibold text-lg transition-all duration-300
-                 hover:bg-[#1F1346] hover:-translate-y-1"
+          id="btn_login"
+          class="w-full h-14 rounded-xl bg-[#f59500] text-white font-semibold text-lg transition-all duration-300 hover:bg-[#1F1346] hover:-translate-y-1"
         >
           Consultar
         </button>
 
         <!-- LOGIN LINK -->
         <div class="mt-10 text-center">
-
-          <p class="text-slate-500">
-            ¿Administrador?
-          </p>
+          <p class="text-slate-500">¿Administrador?</p>
 
           <button
-          id="btn_show_login_adm"
+            id="btn_show_login_adm"
             (click)="showLogin = true"
-            class="mt-2 text-[#f59500] font-semibold
-                   hover:text-[#1F1346] transition"
+            class="mt-2 text-[#f59500] font-semibold hover:text-[#1F1346] transition"
           >
             Inicia sesión
           </button>
-
         </div>
-
       </div>
 
       <!-- LOGIN PANEL -->
-      <div (keyup.enter)="login()"
-      class="absolute inset-0 bg-white rounded-3xl shadow-2xl p-10
-            transition-all duration-700 ease-in-out"
-
-      [class.translate-x-full]="!showLogin"
-      [class.translate-x-0]="showLogin"
-    >
-
+      <div
+        (keyup.enter)="login()"
+        class="absolute inset-0 bg-white rounded-3xl shadow-2xl p-10 transition-all duration-700 ease-in-out"
+        [class.translate-x-full]="!showLogin"
+        [class.translate-x-0]="showLogin"
+      >
         <div class="flex justify-center mb-8">
-
-          <img
-            src="images/logo-erum.png"
-            class="w-24"
-            alt=""
-          />
-
+          <img src="images/logo-erum.png" class="w-24" alt="" />
         </div>
 
-        <h2 class="text-3xl font-bold text-center text-slate-800 mb-8">
-          Iniciar sesión
-        </h2>
+        <h2 class="text-3xl font-bold text-center text-slate-800 mb-8">Iniciar sesión</h2>
 
         <!-- USER -->
         <div class="mb-5">
-
-          <label class="block mb-2 text-sm text-slate-600">
-            Usuario
-          </label>
+          <label class="block mb-2 text-sm text-slate-600"> Usuario </label>
 
           <input
-          id="in_user_admin"
+            id="in_user_admin"
             type="text"
             [(ngModel)]="user"
             placeholder="Ingresa tu usuario"
-            class="w-full h-14 rounded-xl border border-slate-300
-                   px-4 outline-none transition
-                   focus:ring-4 focus:ring-red-200
-                   focus:border-red-500"
+            class="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none transition focus:ring-4 focus:ring-red-200 focus:border-red-500"
           />
-
         </div>
 
         <!-- PASSWORD -->
         <div class="mb-8">
-
-          <label class="block mb-2 text-sm text-slate-600">
-            Contraseña
-          </label>
+          <label class="block mb-2 text-sm text-slate-600"> Contraseña </label>
 
           <input
-          id="in_pwd_admin"
+            id="in_pwd_admin"
             type="password"
             [(ngModel)]="password"
             placeholder="Ingresa tu contraseña"
-            class="w-full h-14 rounded-xl border border-slate-300
-                   px-4 outline-none transition
-                   focus:ring-4 focus:ring-red-200
-                   focus:border-red-500"
+            class="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none transition focus:ring-4 focus:ring-red-200 focus:border-red-500"
           />
-
         </div>
 
         <button
-        id="btn_login_admin"
-        (click)="login()"
-          class="w-full h-14 rounded-xl bg-[#f59500] text-white
-                 font-semibold text-lg transition-all duration-300
-                 hover:bg-[#1F1346] hover:-translate-y-1"
+          id="btn_login_admin"
+          (click)="login()"
+          class="w-full h-14 rounded-xl bg-[#f59500] text-white font-semibold text-lg transition-all duration-300 hover:bg-[#1F1346] hover:-translate-y-1"
         >
           Ingresar
         </button>
 
         <!-- VOLVER -->
         <div class="mt-10 text-center">
-
           <button
-          id="btn_return"
+            id="btn_return"
             (click)="showLogin = false"
             class="text-slate-500 hover:text-slate-700 transition"
           >
             ← Volver
           </button>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </div>

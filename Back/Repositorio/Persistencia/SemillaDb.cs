@@ -25,14 +25,14 @@ namespace Repositorio.Persistencia
                 context.Roles.AddRange(
                     new Roles
                     {
-                        NameRole = "Administrator"
+                        NameRole = "Administrador"
                     });
 
                 await context.SaveChangesAsync();
             }
 
             var adminRole = await context.Roles
-            .FirstAsync(x => x.NameRole == "Administrator");
+            .FirstAsync(x => x.NameRole == "Administrador");
 
             if (!adminExists)
             {
@@ -55,6 +55,7 @@ namespace Repositorio.Persistencia
 
                 await context.SaveChangesAsync();
             }
+
 
         }
     }

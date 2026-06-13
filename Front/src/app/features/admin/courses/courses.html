@@ -1,92 +1,73 @@
 <div class="flex justify-between items-center mb-4">
-
-  <h2 class="text-xl font-semibold">
-    Cursos ({{ filteredCourses.length }})
-  </h2>
+  <h2 class="text-xl font-semibold">Cursos ({{ filteredCourses.length }})</h2>
 
   <div class="flex gap-3 items-center">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="filterCourse()"
+      placeholder="Buscar curso..."
+      class="border rounded-lg px-4 py-2 w-72"
+    />
 
-  <input
-    type="text"
-    [(ngModel)]="searchText"
-    (input)="filterCourse()"
-    placeholder="Buscar curso..."
-    class="border rounded-lg px-4 py-2 w-72">
+    <!-- Dropdown -->
+    <div class="relative">
+      <button
+        (click)="showAdminMenu = !showAdminMenu"
+        class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+      >
+        <i class="fa-solid fa-gear"></i>
+        Administración
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
 
-  <!-- Dropdown -->
-  <div class="relative">
+      @if (showAdminMenu) {
+        <div class="absolute mt-2 bg-white border rounded-lg shadow-lg w-56 z-50">
+          <button
+            (click)="openModalAdmin('categorias')"
+            class="w-full text-left px-4 py-3 hover:bg-slate-100"
+          >
+            Categorías
+          </button>
+
+          <button
+            (click)="openModalAdmin('subcategorias')"
+            class="w-full text-left px-4 py-3 hover:bg-slate-100"
+          >
+            Subcategorías
+          </button>
+
+          <button
+            (click)="openModalAdmin('costos')"
+            class="w-full text-left px-4 py-3 hover:bg-slate-100"
+          >
+            Costos
+          </button>
+        </div>
+      }
+    </div>
+
     <button
-      (click)="showAdminMenu = !showAdminMenu"
-      class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
-
-      <i class="fa-solid fa-gear"></i>
-      Administración
-      <i class="fa-solid fa-chevron-down"></i>
-
+      (click)="newCourse()"
+      class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+    >
+      <i class="fa-solid fa-book"></i>
+      Nuevo Curso
     </button>
 
-    @if(showAdminMenu){
-
-      <div class="absolute mt-2 bg-white border rounded-lg shadow-lg w-56 z-50">
-
-        <button
-          (click)="openModalAdmin('categorias')"
-          class="w-full text-left px-4 py-3 hover:bg-slate-100">
-
-          Categorías
-
-        </button>
-
-        <button
-          (click)="openModalAdmin('subcategorias')"
-          class="w-full text-left px-4 py-3 hover:bg-slate-100">
-
-          Subcategorías
-
-        </button>
-
-        <button
-          (click)="openModalAdmin('costos')"
-          class="w-full text-left px-4 py-3 hover:bg-slate-100">
-
-          Costos
-
-        </button>
-
-      </div>
-
-    }
-
+    <button
+      (click)="newTemplate()"
+      class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+    >
+      <i class="fa-solid fa-file-circle-plus"></i>
+      Nueva Plantilla
+    </button>
   </div>
-
-  <button
-    (click)="newCourse()"
-    class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
-
-    <i class="fa-solid fa-book"></i>
-    Nuevo Curso
-
-  </button>
-
-  <button
-    (click)="newTemplate()"
-    class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2">
-
-    <i class="fa-solid fa-file-circle-plus"></i>
-    Nueva Plantilla
-
-  </button>
-
-</div>
-
 </div>
 
 <table class="w-full">
-
   <thead>
-
     <tr class="border-b">
-      <th class="p-4"></th>
       <th class="text-left p-4">Código</th>
       <th class="text-left p-4">Nombre</th>
       <th class="text-left p-4">Descripción</th>
@@ -95,717 +76,791 @@
       <th class="text-left p-4">Costo</th>
       <th class="p-4"></th>
     </tr>
-
   </thead>
 
   <tbody>
-
-  @for (courses of filteredCourses; track courses.id) {
-
-    <tr class="border-b hover:bg-slate-50">
-
-      <!-- EDITAR -->
-
-      <td class="p-4">
-
-        @if(editingCourseId !== courses.id) {
-
-<div class="flex justify-center items-center gap-4">
-
-    <button
-    matTooltip="Editar Curso"
-      (click)="editCourse(courses)"
-      class="text-blue-600 hover:text-blue-800">
-
-      <i class="fa-solid fa-pen"></i>
-
-    </button>
-
-    <button
-    matTooltip="Editar plantilla"
-    (click)="editTemplate(courses)"
-    class="text-amber-600">
-    <i class="fa-solid fa-file-pen"></i>
-  </button>
-
-    <button
-    matTooltip="Visualizar plantilla"
-      (click)="previewTemplate(courses)"
-      class="text-sky-600 hover:text-sky-800">
-
-      <i class="fa-solid fa-eye"></i>
-
-    </button>
-
-  </div>
-
-
-
-        }
-
-      </td>
-
-
-
-      <!-- CODIGO -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.code"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.codigo }}
-
-        }
-
-      </td>
-
-      <!-- NOMBRE -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.name"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.nombre }}
-
-        }
-
-      </td>
-
-      <!-- DESCRIPCION -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.description"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.descripcion }}
-
-        }
-
-      </td>
-
-      <!-- SUB CATEGORIA -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.description"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.subCategoria.nombre }}
-
-        }
-
-      </td>
-
-
-      <!-- VIGENCIA -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.validity"
-            (keydown)="preventInvalidKeys($event)"
-            type="number"
-            min="0"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.vigencia }} meses
-
-        }
-
-      </td>
-
-      <!-- COSTO -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <input
-            [(ngModel)]="editModel.cost"
-            (keydown)="preventInvalidKeys($event)"
-            type="number"
-            min="0"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ courses.costos.valor | currency }}
-
-        }
-
-      </td>
-
-      <!-- ACCIONES -->
-
-      <td class="p-4">
-
-        @if(editingCourseId === courses.id) {
-
-          <button
-          matTooltip="Guardar Cambios"
-            (click)="saveCourse()"
-            class="text-green-600 mr-2">
-
-            <i class="fa-solid fa-floppy-disk"></i>
-
-          </button>
-
-          <button
-          matTooltip="Descartar Cambios"
-            (click)="cancelEdit()"
-            class="text-gray-600">
-
-            <i class="fa-solid fa-xmark"></i>
-
-          </button>
-
-        } @else {
-
-          <td class="p-4">
-          <div class="flex gap-3">
-
-            <button
-            matTooltip="Eliminar Curso"
-              (click)="deleteCourse(courses.id)"
-              class="text-red-600">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-
-          </div>
+    @for (courses of filteredCourses; track courses.id) {
+      <tr class="border-b hover:bg-slate-50">
+        <!-- CODIGO -->
+
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <input [(ngModel)]="editModel.code" class="border rounded px-2 py-1 w-full" />
+          } @else {
+            {{ courses.codigo }}
+          }
         </td>
 
-        }
+        <!-- NOMBRE -->
 
-      </td>
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <input [(ngModel)]="editModel.name" class="border rounded px-2 py-1 w-full" />
+          } @else {
+            {{ courses.nombre }}
+          }
+        </td>
 
-    </tr>
+        <!-- DESCRIPCION -->
 
-  }
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <input [(ngModel)]="editModel.description" class="border rounded px-2 py-1 w-full" />
+          } @else {
+            {{ courses.descripcion }}
+          }
+        </td>
 
-</tbody>
+        <!-- SUB CATEGORIA -->
 
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <select id="sel_id_rol" [(ngModel)]="editModel.idSubCategory" class="border rounded px-2 py-1">
+              @for (subcategory of subcategories; track subcategory.id) {
+                <option [value]="subcategory.id">
+                  {{ subcategory.nombre }}
+                </option>
+              }
+            </select>
+          } @else {
+            {{ courses.subCategoria.nombre }}
+          }
+        </td>
+
+        <!-- VIGENCIA -->
+
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <input
+              [(ngModel)]="editModel.validity"
+              (keydown)="preventInvalidKeys($event)"
+              type="number"
+              min="0"
+              class="border rounded px-2 py-1 w-full"
+            />
+          } @else {
+            {{ courses.vigencia }} meses
+          }
+        </td>
+
+        <!-- COSTO -->
+
+        <td class="p-4">
+          @if (editingCourseId === courses.id) {
+            <select id="sel_id_rol" [(ngModel)]="editModel.idCost" class="border rounded px-2 py-1">
+              @for (cost of costs; track cost.id) {
+                <option [value]="cost.id">
+                  {{ cost.codigo }}
+                </option>
+              }
+            </select>
+          } @else {
+            {{ courses.costos.valor | currency }}
+          }
+        </td>
+
+        <!-- ACCIONES -->
+
+        <td class="p-4">
+          @if (editingCourseId !== courses.id) {
+            <button
+              matTooltip="Editar Curso"
+              (click)="editCourse(courses)"
+              class="text-blue-600 hover:text-blue-800 mr-2"
+            >
+              <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button
+              matTooltip="Editar plantilla"
+              (click)="editTemplate(courses)"
+              class="text-amber-600 mr-2"
+            >
+              <i class="fa-solid fa-file-pen"></i>
+            </button>
+
+            <button
+              matTooltip="Visualizar plantilla"
+              (click)="previewTemplate(courses)"
+              class="text-sky-600 hover:text-sky-800 mr-2"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+            <button
+              matTooltip="Eliminar Curso"
+              (click)="deleteCourse(courses.id)"
+              class="text-red-600 mr-2"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          } @else {
+            <button matTooltip="Guardar Cambios" (click)="saveCourse()" class="text-green-600 mr-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+
+            <button matTooltip="Descartar Cambios" (click)="cancelEdit()" class="text-gray-600">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
 </table>
 
-
-@if(showCreateModal) {
-
-<div
-  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-
-  <div
-    class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
-
-    <div class="flex justify-between items-center mb-4">
-
-      <h2 class="text-xl font-semibold">
-
-        Nuevo Curso
-
-      </h2>
-
-      <button
-        (click)="closeModal()">
-
-        <i class="fa-solid fa-xmark"></i>
-
-      </button>
-
-    </div>
-
-    <div class="space-y-4">
-
-      <div>
-
-        <label class="block mb-1">
-          Código
-        </label>
-
-        <input [(ngModel)]="createModel.code"
-          type="text"
-          class="w-full border rounded-lg px-3 py-2">
-
-      </div>
-
-      <div>
-
-        <label class="block mb-1">
-          Nombre
-        </label>
-
-        <input [(ngModel)]="createModel.name"
-          type="email"
-          class="w-full border rounded-lg px-3 py-2">
-
-      </div>
-
-      <div>
-
-        <label class="block mb-1">
-          Descripción
-        </label>
-
-        <input [(ngModel)]="createModel.description"
-          type="email"
-          class="w-full border rounded-lg px-3 py-2">
-
-      </div>
-
-      <div>
-
-        <label class="block mb-1">
-          Vigencia
-        </label>
-
-        <input [(ngModel)]="createModel.validity"
-          (keydown)="preventInvalidKeys($event)"
-            type="number"
-            min="0"
-          class="w-full border rounded-lg px-3 py-2">
-
-      </div>
-
-      <div>
-
-        <label class="block mb-1">
-          Costo
-        </label>
-
-        <input [(ngModel)]="createModel.cost"
-          (keydown)="preventInvalidKeys($event)"
-            type="number"
-            min="0"
-          class="w-full border rounded-lg px-3 py-2">
-
-      </div>
-
-
-    </div>
-
-    <div class="flex justify-end gap-3 mt-6">
-
-      <button
-        (click)="closeModal()"
-        class="px-4 py-2 border rounded-lg">
-
-        Cancelar
-
-      </button>
-
-      <button (click)="saveNewCourse()"
-        class="px-4 py-2 bg-green-600 text-white rounded-lg">
-
-        Guardar
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-}
-
-
-@if(showPreviewModal){
-
-<div
-  class="fixed inset-0 bg-black/50
-         flex items-center justify-center z-50">
-
-  <div
-    class="bg-white
-           rounded-xl
-           w-[90vw]
-           h-[90vh]
-           overflow-auto
-           p-4">
-
-    <div class="flex justify-end">
-
-      <button
-        (click)="showPreviewModal = false">
-
-        <i class="fa-solid fa-xmark"></i>
-
-      </button>
-
-    </div>
-
-    <div [innerHTML]="previewHtml">
-
-    </div>
-
-  </div>
-
-</div>
-
-}
-
-@if(showCreateTemplateModal){
-
-<div
-  class="fixed inset-0 bg-black/50
-         flex items-center justify-center
-         z-50">
-
-  <div
-    class="bg-white
-           rounded-xl
-           w-[95vw]
-           h-[95vh]
-           flex
-           overflow-hidden">
-
-    <!-- PANEL IZQUIERDO -->
-
-    <div class="w-72 border-r p-4 overflow-y-auto">
-
+@if (showCreateModal) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
       <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Nuevo Curso</h2>
 
-        <h2 class="font-semibold text-lg">
-          Diseñador
+        <button (click)="closeModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block mb-1"> Código </label>
+
+          <input
+            [(ngModel)]="createModel.code"
+            type="text"
+            class="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1"> Nombre </label>
+
+          <input
+            [(ngModel)]="createModel.name"
+            type="email"
+            class="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1"> Descripción </label>
+
+          <input
+            [(ngModel)]="createModel.description"
+            type="email"
+            class="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1"> Vigencia </label>
+
+          <input
+            [(ngModel)]="createModel.validity"
+            (keydown)="preventInvalidKeys($event)"
+            type="number"
+            min="0"
+            class="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1"> Costo </label>
+
+          <select id="sel_id_rol" [(ngModel)]="createModel.idCost" class="border rounded px-2 py-1">
+            @for (cost of costs; track cost.id) {
+              <option [value]="cost.id">
+                {{ cost.codigo }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class="block mb-1"> Sub Categoria </label>
+
+          <select
+            id="sel_id_rol"
+            [(ngModel)]="createModel.idSubCategory"
+            class="border rounded px-2 py-1"
+          >
+            @for (subcategory of subcategories; track subcategory.id) {
+              <option [value]="subcategory.id">
+                {{ subcategory.nombre }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="closeModal()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+
+        <button (click)="saveNewCourse()" class="px-4 py-2 bg-green-600 text-white rounded-lg">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showPreviewModal) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl w-[90vw] h-[90vh] overflow-auto p-4">
+      <div class="flex justify-end">
+        <button (click)="showPreviewModal = false">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div [innerHTML]="previewHtml"></div>
+    </div>
+  </div>
+}
+
+@if (showCreateTemplateModal) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl w-[95vw] h-[95vh] flex overflow-hidden">
+      <!-- PANEL IZQUIERDO -->
+
+      <div class="w-72 border-r p-4 overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-semibold text-lg">Diseñador</h2>
+
+          <button (click)="closeModalTemplate()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2 font-medium"> Curso </label>
+
+          <select [(ngModel)]="createModelTemplate.idCourse" class="w-full border rounded-lg p-2">
+            <option [ngValue]="0">Seleccione un curso</option>
+
+            @for (course of availableCourses; track course.id) {
+              <option [ngValue]="course.id">{{ course.codigo }} - {{ course.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <h3 class="font-medium mb-2">Campos</h3>
+
+        @for (field of availableFields; track field) {
+          <button
+            (click)="addField(field)"
+            class="w-full mb-2 border rounded-lg p-2 text-left hover:bg-slate-100"
+          >
+            {{ field }}
+          </button>
+        }
+
+        <hr class="my-4" />
+
+        <label class="block mb-2"> Imagen de fondo </label>
+
+        <input
+          class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg"
+          type="file"
+          accept="image/*"
+          (change)="onBackgroundSelected($event)"
+        />
+
+        @if (isEditingTemplate) {
+          <button
+            (click)="saveNewTemplate()"
+            class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg"
+          >
+            Guardar Plantilla
+          </button>
+        } @else {
+          <button
+            (click)="saveTemplate()"
+            class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg"
+          >
+            {{ isEditingTemplate ? 'Actualizar' : 'Guardar' }}
+          </button>
+        }
+      </div>
+
+      <!-- LIENZO -->
+
+      <div class="flex-1 overflow-auto bg-slate-100 p-6">
+        <div class="relative bg-white shadow-lg mx-auto" style="width: 1200px; height: 800px">
+          @if (backgroundImage) {
+            <img [src]="backgroundImage" class="absolute inset-0 w-full h-full object-cover" />
+          }
+
+          @for (field of designerFields; track $index) {
+            <div
+              cdkDrag
+              [cdkDragFreeDragPosition]="{
+                x: field.x,
+                y: field.y,
+              }"
+              (cdkDragEnded)="dragEnded($event, field)"
+              class="absolute border border-blue-500 bg-white px-2 py-1 cursor-move shadow select-none"
+            >
+              {{ '{{' + field.type + '}}' }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (modalAdminVisible) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-5xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">
+          @if (modalType === 'categorias') {
+            Categorías
+          }
+
+          @if (modalType === 'subcategorias') {
+            Subcategorías
+          }
+
+          @if (modalType === 'costos') {
+            Costos
+          }
         </h2>
 
-        <button
-          (click)="closeModalTemplate()">
-
-          <i class="fa-solid fa-xmark"></i>
-
+        <button (click)="closeModalAdmin()" class="text-gray-600 hover:text-red-600">
+          <i class="fa-solid fa-xmark text-xl"></i>
         </button>
-
       </div>
-      <div class="mb-4">
 
-  <label class="block mb-2 font-medium">
+      <div class="flex justify-between items-center mb-4">
+        @if (modalType === 'categorias') {
+          <button
+            (click)="showModalAdminNew('categorias')"
+            class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+          >
+            <i class="fa-solid fa-book"></i>
+            Nueva Categoria
+          </button>
 
-    Curso
+          <input
+            id="in_search_users"
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="filterAdmin()"
+            placeholder="Buscar..."
+            class="border rounded-lg px-4 py-2 w-72"
+          />
+        }
 
-  </label>
+        @if (modalType === 'subcategorias') {
+          <button
+            (click)="showModalAdminNew('subcategorias')"
+            class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+          >
+            <i class="fa-solid fa-book"></i>
+            Nueva SubCategoria
+          </button>
 
-  <select
-    [(ngModel)]="createModelTemplate.idCourse"
-    class="w-full border rounded-lg p-2">
+          <input
+            id="in_search_users"
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="filterAdmin()"
+            placeholder="Buscar..."
+            class="border rounded-lg px-4 py-2 w-72"
+          />
+        }
 
-    <option [ngValue]="0">
-      Seleccione un curso
-    </option>
+        @if (modalType === 'costos') {
+          <button
+            (click)="showModalAdminNew('costos')"
+            class="bg-[#f59500] text-white px-4 py-2 rounded-lg hover:bg-[#1F1346] flex items-center gap-2"
+          >
+            <i class="fa-solid fa-book"></i>
+            Nuevo Costo
+          </button>
 
-    @for(course of availableCourses; track course.id){
+          <input
+            id="in_search_users"
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="filterAdmin()"
+            placeholder="Buscar..."
+            class="border rounded-lg px-4 py-2 w-72"
+          />
+        }
+      </div>
 
-    <option [ngValue]="course.id">
+      <!-- Tabla -->
 
-      {{ course.codigo }} - {{ course.nombre }}
+      <table class="w-full">
+        <thead>
+          <tr class="border-b">
+            @if (modalType === 'categorias') {
+              <th class="p-4">Nombre</th>
+              <th class="p-4">Acciones</th>
+            }
+            @if (modalType === 'subcategorias') {
+              <th class="p-4">Nombre</th>
+              <th class="p-4">Categoria</th>
+              <th class="p-4">Acciones</th>
+            }
+            @if (modalType === 'costos') {
+              <th class="p-4">Código</th>
+              <th class="p-4">Valor</th>
+              <th class="p-4">Acciones</th>
+            }
+          </tr>
+        </thead>
 
-    </option>
+        <tbody>
+          @if (modalType === 'categorias') {
+            @for (category of filteredCategories; track category.id) {
+              <tr class="border-b">
+                @if (editingCategoryId === category.id) {
+                  <input
+                    id="in_email_user_edit"
+                    [(ngModel)]="editModelCategory.nombre"
+                    class="border rounded px-2 py-1 w-full"
+                  />
+                } @else {
+                  <td class="p-4">{{ category.nombre }}</td>
+                }
 
-  }
+                @if (editingCategoryId !== category.id) {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_edit_user"
+                        matTooltip="Editar"
+                        (click)="editAdmin(category)"
+                        class="text-blue-600"
+                      >
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
 
-  </select>
+                      <button
+                        matTooltip="Eliminar usuario"
+                        (click)="deleteAdmin(category.id)"
+                        class="text-red-600"
+                      >
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                } @else {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_save_user_edit"
+                        matTooltip="Guardar"
+                        (click)="saveEditAdmin()"
+                        class="text-green-600 mr-2"
+                      >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                      </button>
 
-</div>
+                      <button
+                        id="btn_cancel_user_edit"
+                        matTooltip="Cancelar"
+                        (click)="cancelEdit()"
+                        class="text-gray-600"
+                      >
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          }
 
-      <h3 class="font-medium mb-2">
-        Campos
-      </h3>
+          @if (modalType === 'subcategorias') {
+            @for (subcategory of filteredSubCategories; track subcategory.id) {
+              <tr class="border-b">
+                @if (editingSubCategoryId === subcategory.id) {
+                  <td class="p-4">
+                    <input
+                      id="in_email_user_edit"
+                      [(ngModel)]="editModelSubCategory.nombre"
+                      class="border rounded px-2 py-1 w-full"
+                    />
+                  </td>
+                } @else {
+                  <td class="p-4">{{ subcategory.nombre }}</td>
+                }
 
-      @for(field of availableFields; track field){
+                @if (editingSubCategoryId === subcategory.id) {
+                  <td>
+                    <select
+                      id="sel_id_rol"
+                      [(ngModel)]="editModelSubCategory.idCategory"
+                      class="border rounded px-2 py-1 w-full"
+                    >
+                      @for (category of categories; track category.id) {
+                        <option [value]="category.id">
+                          {{ category.nombre }}
+                        </option>
+                      }
+                    </select>
+                  </td>
+                } @else {
+                  <td class="p-4">{{ subcategory.categoria.nombre }}</td>
+                }
 
-        <button
-          (click)="addField(field)"
-          class="
-            w-full
-            mb-2
-            border
-            rounded-lg
-            p-2
-            text-left
-            hover:bg-slate-100">
+                @if (editingSubCategoryId !== subcategory.id) {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_edit_user"
+                        matTooltip="Editar"
+                        (click)="editAdmin(subcategory)"
+                        class="text-blue-600"
+                      >
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
 
-          {{ field }}
+                      <button
+                        matTooltip="Eliminar"
+                        (click)="deleteAdmin(subcategory.id)"
+                        class="text-red-600"
+                      >
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                } @else {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_save_user_edit"
+                        matTooltip="Guardar"
+                        (click)="saveEditAdmin()"
+                        class="text-green-600 mr-2"
+                      >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                      </button>
 
-        </button>
+                      <button
+                        id="btn_cancel_user_edit"
+                        matTooltip="Cancelar"
+                        (click)="cancelEdit()"
+                        class="text-gray-600"
+                      >
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          }
 
+          @if (modalType === 'costos') {
+            @for (cost of filteredCosts; track cost.id) {
+              <tr class="border-b">
+                @if (editingCostId === cost.id) {
+                  <td class="p-4">
+                    <input
+                      id="in_email_user_edit"
+                      [(ngModel)]="editModelCost.codigo"
+                      class="border rounded px-2 py-1 w-full"
+                    />
+                  </td>
+                } @else {
+                  <td class="p-4">{{ cost.codigo }}</td>
+                }
+
+                @if (editingCostId === cost.id) {
+                  <td class="p-4">
+                    <input
+                      id="in_email_user_edit"
+                      [(ngModel)]="editModelCost.valor"
+                      class="border rounded px-2 py-1 w-full"
+                    />
+                  </td>
+                } @else {
+                  <td class="p-4">{{ cost.valor | currency }}</td>
+                }
+
+                @if (editingCostId !== cost.id) {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_edit_user"
+                        matTooltip="Editar"
+                        (click)="editAdmin(cost)"
+                        class="text-blue-600"
+                      >
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
+
+                      <button
+                        matTooltip="Eliminar usuario"
+                        (click)="deleteAdmin(cost.id)"
+                        class="text-red-600"
+                      >
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                } @else {
+                  <td class="p-4">
+                    <div class="flex gap-3">
+                      <button
+                        id="btn_save_user_edit"
+                        matTooltip="Guardar"
+                        (click)="saveEditAdmin()"
+                        class="text-green-600 mr-2"
+                      >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                      </button>
+
+                      <button
+                        id="btn_cancel_user_edit"
+                        matTooltip="Cancelar"
+                        (click)="cancelEdit()"
+                        class="text-gray-600"
+                      >
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+@if (showNewAdminMenu) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+      @if (modalType === 'categorias') {
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Nueva Categoria</h2>
+
+          <button (click)="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block mb-1"> Nombre Categoria </label>
+
+            <input
+              [(ngModel)]="createModelCategory.nombre"
+              type="email"
+              class="w-full border rounded-lg px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button (click)="closeModal()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+
+          <button
+            (click)="saveNewAdmin()"
+            class="px-4 py-2 bg-[#f59500] hover:bg-[#1F1346] text-white rounded-lg"
+          >
+            Guardar
+          </button>
+        </div>
       }
 
-      <hr class="my-4">
+      @if (modalType === 'subcategorias') {
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Nueva SubCategoria</h2>
 
-      <label class="block mb-2">
-        Imagen de fondo
-      </label>
+          <button (click)="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
 
-      <input
-      class="
-          mt-4
-          w-full
-          bg-green-600
-          text-white
-          py-2
-          rounded-lg"
-        type="file"
-        accept="image/*"
-        (change)="onBackgroundSelected($event)">
+        <div class="space-y-4">
+          <div>
+            <label class="block mb-1"> Nombre SubCategoria </label>
 
-@if (isEditingTemplate) {
-<button
-        (click)="saveNewTemplate()"
-        class="
-          mt-4
-          w-full
-          bg-green-600
-          text-white
-          py-2
-          rounded-lg">
-
-        Guardar Plantilla
-
-      </button>
-}@else{
-<button
-  (click)="saveTemplate()"
- class="
-          mt-4
-          w-full
-          bg-green-600
-          text-white
-          py-2
-          rounded-lg">
-
-  {{ isEditingTemplate ? 'Actualizar' : 'Guardar' }}
-
-</button>
-
-}
-
-
-
-
-    </div>
-
-    <!-- LIENZO -->
-
-    <div
-      class="flex-1
-             overflow-auto
-             bg-slate-100
-             p-6">
-
-      <div
-        class="relative
-               bg-white
-               shadow-lg
-               mx-auto"
-        style="
-          width:1200px;
-          height:800px;">
-
-        @if(backgroundImage){
-
-          <img
-            [src]="backgroundImage"
-            class="
-              absolute
-              inset-0
-              w-full
-              h-full
-              object-cover">
-
-        }
-
-        @for(field of designerFields; track $index){
-
-          <div
-
-            cdkDrag
-
-            [cdkDragFreeDragPosition]="{
-              x: field.x,
-              y: field.y
-            }"
-
-            (cdkDragEnded)="dragEnded($event, field)"
-
-            class="
-              absolute
-              border
-              border-blue-500
-              bg-white
-              px-2
-              py-1
-              cursor-move
-              shadow
-              select-none">
-
-            {{ '{{' + field.type + '}}' }}
-
+            <input
+              [(ngModel)]="createModelSubCategory.nombre"
+              type="email"
+              class="w-full border rounded-lg px-3 py-2"
+            />
           </div>
 
-        }
+          <div>
+            <label class="block mb-1"> Categoria </label>
 
-      </div>
+            <select
+              class="w-full border rounded-lg px-3 py-2"
+              [(ngModel)]="createModelSubCategory.idCategory"
+            >
+              @for (category of categories; track category.id) {
+                <option [value]="category.id">
+                  {{ category.nombre }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
 
+        <div class="flex justify-end gap-3 mt-6">
+          <button (click)="closeModal()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+
+          <button
+            (click)="saveNewAdmin()"
+            class="px-4 py-2 bg-[#f59500] hover:bg-[#1F1346] text-white rounded-lg"
+          >
+            Guardar
+          </button>
+        </div>
+      }
+
+      @if (modalType === 'costos') {
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Nuevo Costo</h2>
+
+          <button (click)="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block mb-1"> Codigo Costo </label>
+
+            <input
+              [(ngModel)]="createModelCost.codigo"
+              class="w-full border rounded-lg px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label class="block mb-1"> Valor </label>
+
+            <input
+              [(ngModel)]="createModelCost.valor"
+              type="number"
+              min="0"
+              class="w-full border rounded-lg px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button (click)="closeModal()" class="px-4 py-2 border rounded-lg">Cancelar</button>
+
+          <button
+            (click)="saveNewAdmin()"
+            class="px-4 py-2 bg-[#f59500] hover:bg-[#1F1346] text-white rounded-lg"
+          >
+            Guardar
+          </button>
+        </div>
+      }
     </div>
-
   </div>
-
-</div>
-
-}
-
-
-@if(modalAdminVisible){
-
-<div
-  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-
-  <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-5xl p-6">
-
-    <div class="flex justify-between items-center mb-4">
-
-      <h2 class="text-xl font-bold">
-
-        @if(modalType === 'categorias'){
-          Categorías
-        }
-
-        @if(modalType === 'subcategorias'){
-          Subcategorías
-        }
-
-        @if(modalType === 'costos'){
-          Costos
-        }
-
-      </h2>
-
-      <button
-        (click)="closeModalAdmin()"
-        class="text-gray-600 hover:text-red-600">
-
-        <i class="fa-solid fa-xmark text-xl"></i>
-
-      </button>
-
-    </div>
-
-    <!-- Tabla -->
-
-    <table class="w-full">
-
-      <thead>
-
-        <tr class="border-b">
-
-          <th class="p-4">Código</th>
-          <th class="p-4">Nombre</th>
-          <th class="p-4">Descripción</th>
-          <th class="p-4">Acciones</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        @if(modalType === 'categorias'){
-
-          @for(category of categories; track category.id){
-
-            <tr class="border-b">
-
-              <td class="p-4">{{ category.codigo }}</td>
-              <td class="p-4">{{ category.nombre }}</td>
-              <td class="p-4">{{ category.descripcion }}</td>
-
-              <td class="p-4">
-                <button class="text-blue-600">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-              </td>
-
-            </tr>
-
-          }
-
-        }
-
-        @if(modalType === 'subcategorias'){
-
-          @for(subcategory of subcategories; track subcategory.id){
-
-            <tr class="border-b">
-
-              <td class="p-4">{{ subcategory.codigo }}</td>
-              <td class="p-4">{{ subcategory.nombre }}</td>
-              <td class="p-4">{{ subcategory.descripcion }}</td>
-
-              <td class="p-4">
-                <button class="text-blue-600">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-              </td>
-
-            </tr>
-
-          }
-
-        }
-
-        @if(modalType === 'costos'){
-
-          @for(cost of costs; track cost.id){
-
-            <tr class="border-b">
-
-              <td class="p-4">{{ cost.codigo }}</td>
-              <td class="p-4">{{ cost.nombre }}</td>
-              <td class="p-4">{{ cost.valor | currency }}</td>
-
-              <td class="p-4">
-                <button class="text-blue-600">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-              </td>
-
-            </tr>
-
-          }
-
-        }
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
 }

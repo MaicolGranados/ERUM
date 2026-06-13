@@ -1,371 +1,186 @@
 <div class="flex justify-between items-center mb-4">
-
-  <h2 class="text-xl font-semibold">
-    Plantillas ({{ filteredTemplates.length }})
-  </h2>
+  <h2 class="text-xl font-semibold">Plantillas ({{ filteredTemplates.length }})</h2>
 
   <div class="flex gap-3">
-
     <input
       type="text"
       [(ngModel)]="searchText"
       (input)="filterTemplate()"
       placeholder="Buscar Plantilla..."
-      class="border rounded-lg px-4 py-2 w-72">
+      class="border rounded-lg px-4 py-2 w-72"
+    />
 
     <button
       (click)="newTemplate()"
-      class="bg-green-600 text-white px-4 py-2 rounded-lg
-             hover:bg-green-700 flex items-center gap-2">
-
+      class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+    >
       <i class="fa-solid fa-user-plus"></i>
       Nueva Plantilla
-
     </button>
-
   </div>
-
 </div>
 
 <table class="w-full">
-
   <thead>
-
     <tr class="border-b">
       <th class="p-4"></th>
       <th class="text-left p-4">Código Curso</th>
       <th class="text-left p-4">Vista Previa</th>
       <th class="p-4"></th>
     </tr>
-
   </thead>
 
   <tbody>
+    @for (templates of filteredTemplates; track templates.id) {
+      <tr class="border-b hover:bg-slate-50">
+        <!-- CODIGO -->
 
-  @for (templates of filteredTemplates; track templates.id) {
-
-    <tr class="border-b hover:bg-slate-50">
-
-      <!-- CODIGO -->
-
-      <td class="p-4">
-
-        @if(editingTemplateId !== templates.id) {
-
-          <button
-            (click)="editTemplate(templates)"
-            class="text-blue-600">
-
-          <i class="fa-solid fa-pen"></i>
-
-          </button>
-
-        }
-
-      </td>
-
-      <!-- CODIGO -->
-
-      <td class="p-4">
-
-        @if(editingTemplateId === templates.id) {
-
-          <input
-            [(ngModel)]="editModel.idCourse"
-            class="border rounded px-2 py-1 w-full">
-
-        } @else {
-
-          {{ templates.curso.codigo }}
-
-        }
-
-      </td>
-
-      <!-- VISTA PREVIA -->
-
-      <td class="p-4 text-center">
-
-      <button
-        (click)="previewTemplate(templates)"
-        class="text-sky-600">
-
-        <i class="fa-solid fa-eye"></i>
-
-      </button>
-
-    </td>
-
-      <!-- ACCIONES -->
-
-      <td class="p-4">
-
-        @if(editingTemplateId === templates.id) {
-
-          <button
-            (click)="saveTemplate()"
-            class="text-green-600 mr-2">
-
-            <i class="fa-solid fa-floppy-disk"></i>
-
-          </button>
-
-          <button
-            (click)="cancelEdit()"
-            class="text-gray-600">
-
-            <i class="fa-solid fa-xmark"></i>
-
-          </button>
-
-        } @else {
-
-          <td class="p-4">
-          <div class="flex gap-3">
-
-            <button
-              (click)="deleteTemplate(templates.id)"
-              class="text-red-600">
-              <i class="fa-solid fa-trash"></i>
+        <td class="p-4">
+          @if (editingTemplateId !== templates.id) {
+            <button (click)="editTemplate(templates)" class="text-blue-600">
+              <i class="fa-solid fa-pen"></i>
             </button>
-
-          </div>
+          }
         </td>
 
-        }
+        <!-- CODIGO -->
 
-      </td>
+        <td class="p-4">
+          @if (editingTemplateId === templates.id) {
+            <input [(ngModel)]="editModel.idCourse" class="border rounded px-2 py-1 w-full" />
+          } @else {
+            {{ templates.curso.codigo }}
+          }
+        </td>
 
-    </tr>
+        <!-- VISTA PREVIA -->
 
-  }
+        <td class="p-4 text-center">
+          <button (click)="previewTemplate(templates)" class="text-sky-600">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </td>
 
-</tbody>
+        <!-- ACCIONES -->
 
+        <td class="p-4">
+          @if (editingTemplateId === templates.id) {
+            <button (click)="saveTemplate()" class="text-green-600 mr-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+
+            <button (click)="cancelEdit()" class="text-gray-600">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          } @else {
+            <td class="p-4">
+              <div class="flex gap-3">
+                <button (click)="deleteTemplate(templates.id)" class="text-red-600">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
 </table>
 
+@if (showPreviewModal) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl w-[90vw] h-[90vh] overflow-auto p-4">
+      <div class="flex justify-end">
+        <button (click)="showPreviewModal = false">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
-@if(showPreviewModal){
-
-<div
-  class="fixed inset-0 bg-black/50
-         flex items-center justify-center z-50">
-
-  <div
-    class="bg-white
-           rounded-xl
-           w-[90vw]
-           h-[90vh]
-           overflow-auto
-           p-4">
-
-    <div class="flex justify-end">
-
-      <button
-        (click)="showPreviewModal = false">
-
-        <i class="fa-solid fa-xmark"></i>
-
-      </button>
-
+      <div [innerHTML]="previewHtml"></div>
     </div>
-
-    <div [innerHTML]="previewHtml">
-
-    </div>
-
   </div>
-
-</div>
-
 }
 
-@if(showCreateModal){
+@if (showCreateModal) {
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl w-[95vw] h-[95vh] flex overflow-hidden">
+      <!-- PANEL IZQUIERDO -->
 
-<div
-  class="fixed inset-0 bg-black/50
-         flex items-center justify-center
-         z-50">
+      <div class="w-72 border-r p-4 overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-semibold text-lg">Diseñador</h2>
 
-  <div
-    class="bg-white
-           rounded-xl
-           w-[95vw]
-           h-[95vh]
-           flex
-           overflow-hidden">
+          <button (click)="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2 font-medium"> Curso </label>
 
-    <!-- PANEL IZQUIERDO -->
+          <select [(ngModel)]="createModel.idCourse" class="w-full border rounded-lg p-2">
+            <option [ngValue]="0">Seleccione un curso</option>
 
-    <div class="w-72 border-r p-4 overflow-y-auto">
+            @for (course of courses; track course.id) {
+              <option [ngValue]="course.id">
+                {{ course.codigo }}
+              </option>
+            }
+          </select>
+        </div>
 
-      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-medium mb-2">Campos</h3>
 
-        <h2 class="font-semibold text-lg">
-          Diseñador
-        </h2>
-
-        <button
-          (click)="closeModal()">
-
-          <i class="fa-solid fa-xmark"></i>
-
-        </button>
-
-      </div>
-      <div class="mb-4">
-
-  <label class="block mb-2 font-medium">
-
-    Curso
-
-  </label>
-
-  <select
-    [(ngModel)]="createModel.idCourse"
-    class="w-full border rounded-lg p-2">
-
-    <option [ngValue]="0">
-      Seleccione un curso
-    </option>
-
-    @for(course of courses; track course.id){
-
-      <option [ngValue]="course.id">
-
-        {{ course.codigo }}
-
-      </option>
-
-    }
-
-  </select>
-
-</div>
-
-      <h3 class="font-medium mb-2">
-        Campos
-      </h3>
-
-      @for(field of availableFields; track field){
-
-        <button
-          (click)="addField(field)"
-          class="
-            w-full
-            mb-2
-            border
-            rounded-lg
-            p-2
-            text-left
-            hover:bg-slate-100">
-
-          {{ field }}
-
-        </button>
-
-      }
-
-      <hr class="my-4">
-
-      <label class="block mb-2">
-        Imagen de fondo
-      </label>
-
-      <input
-      class="
-          mt-4
-          w-full
-          bg-green-600
-          text-white
-          py-2
-          rounded-lg"
-        type="file"
-        accept="image/*"
-        (change)="onBackgroundSelected($event)">
-
-      <button
-        (click)="saveNewTemplate()"
-        class="
-          mt-4
-          w-full
-          bg-green-600
-          text-white
-          py-2
-          rounded-lg">
-
-        Guardar Plantilla
-
-      </button>
-
-    </div>
-
-    <!-- LIENZO -->
-
-    <div
-      class="flex-1
-             overflow-auto
-             bg-slate-100
-             p-6">
-
-      <div
-        class="relative
-               bg-white
-               shadow-lg
-               mx-auto"
-        style="
-          width:1200px;
-          height:800px;">
-
-        @if(backgroundImage){
-
-          <img
-            [src]="backgroundImage"
-            class="
-              absolute
-              inset-0
-              w-full
-              h-full
-              object-cover">
-
+        @for (field of availableFields; track field) {
+          <button
+            (click)="addField(field)"
+            class="w-full mb-2 border rounded-lg p-2 text-left hover:bg-slate-100"
+          >
+            {{ field }}
+          </button>
         }
 
-        @for(field of designerFields; track $index){
+        <hr class="my-4" />
 
-          <div
+        <label class="block mb-2"> Imagen de fondo </label>
 
-            cdkDrag
+        <input
+          class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg"
+          type="file"
+          accept="image/*"
+          (change)="onBackgroundSelected($event)"
+        />
 
-            [cdkDragFreeDragPosition]="{
-              x: field.x,
-              y: field.y
-            }"
-
-            (cdkDragEnded)="dragEnded($event, field)"
-
-            class="
-              absolute
-              border
-              border-blue-500
-              bg-white
-              px-2
-              py-1
-              cursor-move
-              shadow
-              select-none">
-
-            {{ '{{' + field.type + '}}' }}
-
-          </div>
-
-        }
-
+        <button
+          (click)="saveNewTemplate()"
+          class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg"
+        >
+          Guardar Plantilla
+        </button>
       </div>
 
-    </div>
+      <!-- LIENZO -->
 
+      <div class="flex-1 overflow-auto bg-slate-100 p-6">
+        <div class="relative bg-white shadow-lg mx-auto" style="width: 1200px; height: 800px">
+          @if (backgroundImage) {
+            <img [src]="backgroundImage" class="absolute inset-0 w-full h-full object-cover" />
+          }
+
+          @for (field of designerFields; track $index) {
+            <div
+              cdkDrag
+              [cdkDragFreeDragPosition]="{
+                x: field.x,
+                y: field.y,
+              }"
+              (cdkDragEnded)="dragEnded($event, field)"
+              class="absolute border border-blue-500 bg-white px-2 py-1 cursor-move shadow select-none"
+            >
+              {{ '{{' + field.type + '}}' }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
   </div>
-
-</div>
-
 }

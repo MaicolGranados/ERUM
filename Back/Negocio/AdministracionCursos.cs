@@ -180,7 +180,7 @@ namespace Negocio
 
             if (!cursoRequest.IdSubCategory.Equals(0))
             {
-                var categoriaExistente = _repositorioCategoria.GetCategoryByIdAsync(cursoRequest.IdCategory);
+                var categoriaExistente = await _repositorioCategoria.GetCategoryByIdAsync(cursoRequest.IdCategory);
 
                 if (categoriaExistente == null) return new GenericResponseDto
                 {
